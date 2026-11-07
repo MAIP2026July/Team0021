@@ -268,6 +268,6 @@ After the scenario loop is validated, a later phase can add short micro-courses 
 1. Skillsoft. "Skillsoft Launches New Assessment Capability in Percipio to Accelerate Critical Skill Mastery and Close Enterprise Skill Gaps." BusinessWire, 28 March 2022. https://www.businesswire.com/news/home/20220328005585/en/Skillsoft-Launches-New-Assessment-Capability-in-Percipio-to-Accelerate-Critical-Skill-Mastery-and-Close-Enterprise-Skill-Gaps
 2. Skillsoft. "Skillsoft Leads the Shift to Skills Management for Workforce Readiness." BusinessWire, 4 February 2026. https://www.businesswire.com/news/home/20260204242978/en/Skillsoft-Leads-the-Shift-to-Skills-Management-for-Workforce-Readiness
 3. Barchart. "AI Skills Validation Surges 994% as Employees Seek to Prove Proficiency." https://www.barchart.com/story/news/1342730/ai-skills-validation-surges-994-as-employees-seek-to-prove-proficiency
-4. Zhang et al. "SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks." arXiv:2602.12670. https://arxiv.org/abs/2602.12670
-5. Automated essay scoring with large language models under holistic and analytic rubrics. arXiv:2604.00259. https://arxiv.org/html/2604.00259v1
+4. "SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks." arXiv:2602.12670. https://arxiv.org/abs/2602.12670
+5. "LLM Essay Scoring Under Holistic and Analytic Rubrics: Prompt Effects and Bias." arXiv:2604.00259. https://arxiv.org/html/2604.00259v1
 6. Training Industry. Coverage of the Skillsoft launch of Skill Benchmark Assessments in Percipio, 2022. https://trainingindustry.com/press-release/measurement-and-analytics/skillsoft-launches-new-assessment-capability-in-percipio-to-accelerate-critical-skill-mastery-close-enterprise-skill-gaps/

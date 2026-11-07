@@ -2,9 +2,9 @@
 
 ## 1. AI Task Definition
 
-SkillLens performs rubric-based evaluation of short free-text responses. The language model assigns an ordinal score from 0 to 3 for each learning objective and returns a verbatim quotation as evidence. Lesson matching is a tag lookup on objective identifiers in the MVP.
+SkillLens performs rubric-based evaluation of short free-text responses. The language model assigns an ordinal score from 0 to 3 for each learning objective and returns a verbatim quotation as evidence. Follow-up scenarios are drawn from the same scenario set, tagged to the objective they test.
 
-The model selects from validated content. It does not define objectives, rubric levels, lessons, or the confidence determination.
+The model selects from validated content. It does not define objectives, rubric levels, or the confidence determination.
 
 ---
 
@@ -22,11 +22,8 @@ The model selects from validated content. It does not define objectives, rubric 
 | Group agreement gap | Difference in QWK between writing-style or language groups | Paired-style test set | ≤ 0.10 |
 | Keyword-only score | Mean score for responses that list relevant terms without reasoning | Keyword-only test set | ≤ 1 per objective |
 | Override rate | Share of reviewed results where the reviewer changes at least one objective score | Production audit log (pilot) | Reported; reviewed at pilot gate |
-| Course coverage | Share of course-eligible objectives with a published micro-course | Course library records | Reported per skill |
-| Request turnaround | Time from SME request to a draft micro-course ready for review | Request log | ≤ 2 hours for the draft |
-| Micro-course completion | Share of assigned micro-courses started and completed | Learning platform event data (pilot) | Reported |
-| Gap closure | Share of assigned gaps where the objective check is met | Objective check records (pilot) | Reported |
-| Time to close gap | Time between diagnosis and a subsequent successful attempt on the same objective, compared with a full course | Learner records (pilot) | Reported against full-course baseline |
+| Follow-up improvement | Share of follow-up attempts in which the objective score is higher than in the first attempt | Learner records (pilot) | Reported per skill |
+| Time to improvement | Days between the first attempt and the first follow-up attempt that improves the objective score | Learner records (pilot) | Reported |
 | Authoring effort | Hours to author and validate one skill's content | Content team log | Reported per skill; expected to decline across skills |
 
 ---
@@ -37,7 +34,6 @@ The model selects from validated content. It does not define objectives, rubric 
 |---|---|---|---|
 | Learning objectives | Internal | 3 to 5 objectives per skill, defined by subject-matter experts | Content model; rubric |
 | Scenarios and rubrics | Internal | 5 to 8 scenarios per skill with level descriptors per objective | Scoring |
-| Micro-course library | Synthetic (MVP) | Micro-courses tagged by objective identifier, represented by slides, scripts and check items | Assignment and gap closure |
 | Reference set | Created | 40 responses per skill, scored by two graders | Reliability testing |
 | Paired-style set | Created | 12 responses rewritten in different registers, with the same expected scores | Bias testing |
 | Keyword-only set | Created | 6 responses listing terms without reasoning | Gaming test |
