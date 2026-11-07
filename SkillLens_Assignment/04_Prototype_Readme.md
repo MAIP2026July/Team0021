@@ -2,7 +2,7 @@
 
 ## Prototype Type
 
-Browser prototype. A single HTML file (`04_Prototype/index.html`) that runs without a server, account or network connection. Scoring is scripted, not produced by a live language model.
+Browser prototype. A single HTML file (`SkillLens_Assignment/Prototype/index.html`) that runs without a server, account or network connection. Scoring is scripted, not produced by a live language model.
 
 ## What It Demonstrates
 
@@ -33,10 +33,10 @@ The prototype covers two skills (Python for data analysis and communication skil
 
 ## Links
 
-- **Repository:** this repository, folder `SkillLens_Assignment/04_Prototype/`
+- **Repository:** this repository, folder `SkillLens_Assignment/Prototype/` (file `index.html`)
 - **Screen recording:** `SkillLens_Assignment/Appendix/ScreenRecording/PrototypeSkillLens.mov`. The recording has no audio. The readme in the same folder lists the inputs used and their expected results.
 - **Screenshots and wireframes:** `SkillLens_Assignment/Appendix/Wireframes/`
 
 ## Setup
 
-No setup is needed. Run html code through any IDE.
+No setup is needed. Open `SkillLens_Assignment/Prototype/index.html` in a web browser.

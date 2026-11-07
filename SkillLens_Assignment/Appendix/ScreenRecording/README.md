@@ -1,6 +1,6 @@
 # Prototype Screen Recording
 
-This folder holds the screen recording of the SkillLens prototype (`SkillLens_Assignment/04_Prototype/index.html`). The recording has no audio narration. This readme explains what is shown in each section and the inputs used, so that each step can be followed without sound.
+This folder holds the screen recording of the SkillLens prototype (`SkillLens_Assignment/Prototype/index.html`). The recording has no audio narration. This readme explains what is shown in each section and the inputs used, so that each step can be followed without sound.
 
 ## Recording details
 

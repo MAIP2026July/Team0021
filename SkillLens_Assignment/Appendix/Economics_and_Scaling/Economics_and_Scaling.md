@@ -102,7 +102,7 @@ The review routing rate (A6) is the main driver of cost. The table shows the ful
 | 10% (base) | $0.33 | $1.48 |
 | 20% | $0.70 | $2.81 |
 
-A routing rate of 20% doubles the variable cost. The routing rate therefore has a launch threshold in the operating plan: review volume is tracked per skill, and a skill whose routing rate stays above 10% after its first pilot cycle is reviewed before further expansion.
+A routing rate of 20% nearly doubles the variable cost. The routing rate therefore has a launch threshold in the operating plan: review volume is tracked per skill, and a skill whose routing rate stays above 10% after its first pilot cycle is reviewed before further expansion.
 
 ---
 
@@ -117,7 +117,7 @@ Review workload grows with learners, not with compute. At the base assumptions:
 | 1,000 | 4,000 | 400 | 33 |
 | 10,000 | 40,000 | 4,000 | 333 |
 
-Review capacity is the binding constraint on scale. Scaling beyond the capacity of the review team would either lengthen the queue or reduce review quality, and both are launch blockers in the Risk Note.
+Review capacity is the binding constraint on scale. Scaling beyond the capacity of the review team would either lengthen the queue or reduce review quality. The Risk Note (section 3.2) requires that expansion stops when the review queue grows faster than reviewers can clear it.
 
 ### 5.2 Latency
 
