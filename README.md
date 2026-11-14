@@ -1,6 +1,15 @@
 # Team0021
 Neha Nayak - Management of AI products - Experiential Learning
 
+Contact info:
+
+BITS email Id: 2025mb26139@wilp.bits-pilani.ac.in
+
+Phone number: 8861004789
+
+Github Id: https://github.com/Neha-Nayak
+
+
 Task approval: https://github.com/MAIP2026July/AssignmentBriefing/issues/10 
 
 ### Title
