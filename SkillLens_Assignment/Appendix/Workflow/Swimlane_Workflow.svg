@@ -1,109 +1,121 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 840" width="1800" height="840" font-family="Inter, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 790" width="1800" height="790" font-family="Inter, Arial, sans-serif">
   <defs>
     <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#4A5568"/>
     </marker>
   </defs>
-  <rect width="1800" height="840" fill="#FBFBF8"/>
+  <rect width="1800" height="790" fill="#FBFBF8"/>
   <text x="24" y="38" font-size="24" font-weight="600" fill="#14213D">SkillLens workflow: who does what</text>
 
-  <!-- Lanes -->
+  <!-- Lanes (110 px each, starting at y = 60) -->
   <g stroke="#D9DEE7" stroke-width="1">
-    <rect x="0" y="60" width="1800" height="120" fill="#FFFFFF"/>
-    <rect x="0" y="180" width="1800" height="120" fill="#F7F9FC"/>
-    <rect x="0" y="300" width="1800" height="120" fill="#FFFFFF"/>
-    <rect x="0" y="420" width="1800" height="120" fill="#F7F9FC"/>
-    <rect x="0" y="540" width="1800" height="120" fill="#FFFFFF"/>
-    <rect x="0" y="660" width="1800" height="120" fill="#F7F9FC"/>
+    <rect x="0" y="60" width="1800" height="110" fill="#FFFFFF"/>
+    <rect x="0" y="170" width="1800" height="110" fill="#F7F9FC"/>
+    <rect x="0" y="280" width="1800" height="110" fill="#FFFFFF"/>
+    <rect x="0" y="390" width="1800" height="110" fill="#F7F9FC"/>
+    <rect x="0" y="500" width="1800" height="110" fill="#FFFFFF"/>
+    <rect x="0" y="610" width="1800" height="110" fill="#F7F9FC"/>
   </g>
-  <rect x="0" y="60" width="170" height="720" fill="#E6ECF4" stroke="#D9DEE7"/>
+  <rect x="0" y="60" width="170" height="660" fill="#E6ECF4" stroke="#D9DEE7"/>
   <g font-size="15" font-weight="600" fill="#14213D">
-    <text x="16" y="112">Content owner</text><text x="16" y="132">(SME)</text>
-    <text x="16" y="232">Learner</text>
-    <text x="16" y="352">System (app)</text>
-    <text x="16" y="472">AI model (LLM)</text>
-    <text x="16" y="592">Reviewer /</text><text x="16" y="612">manager</text>
-    <text x="16" y="712">Skillsoft</text><text x="16" y="732">platform (proposed)</text>
+    <text x="16" y="108">Content owner</text><text x="16" y="128">(SME)</text>
+    <text x="16" y="218">Learner</text>
+    <text x="16" y="328">System (SkillLens)</text>
+    <text x="16" y="438">AI model (LLM)</text>
+    <text x="16" y="548">Reviewer</text>
+    <text x="16" y="658">Integration</text><text x="16" y="678">partner</text>
   </g>
 
   <!-- Edges -->
   <g fill="none" stroke="#4A5568" stroke-width="2">
-    <path d="M385 120 H435" marker-end="url(#ah)"/>
-    <path d="M605 120 H655" marker-end="url(#ah)"/>
-    <path d="M740 152 V180 H520 V208" marker-end="url(#ah)" stroke-dasharray="8 6"/>
-    <path d="M520 688 V272" marker-end="url(#ah)" stroke-dasharray="8 6"/>
-    <path d="M605 240 H655" marker-end="url(#ah)"/>
-    <path d="M740 272 V328" marker-end="url(#ah)"/>
-    <path d="M825 360 H960 V448" marker-end="url(#ah)"/>
-    <path d="M1045 480 H1180 V394" marker-end="url(#ah)"/>
-    <path d="M1265 360 H1315" marker-end="url(#ah)"/>
-    <path d="M1180 392 V568" marker-end="url(#ah)"/>
-    <path d="M1265 600 H1400 V394" marker-end="url(#ah)"/>
-    <path d="M1400 328 V272" marker-end="url(#ah)"/>
-    <path d="M1485 240 H1515" marker-end="url(#ah)"/>
-    <path d="M1685 240 H1760 V480 H1685" marker-end="url(#ah)"/>
-    <path d="M1600 448 V394" marker-end="url(#ah)"/>
-    <path d="M1600 328 V272" marker-end="url(#ah)"/>
+    <!-- SME release to learner browse -->
+    <path d="M680 147 V180 H470 V191" marker-end="url(#ah)" stroke-dasharray="8 6"/>
+    <!-- Partner launches assessment (up to learner browse) -->
+    <path d="M470 633 V257" marker-end="url(#ah)" stroke-dasharray="8 6"/>
+    <!-- Learner flow -->
+    <path d="M560 225 H590" marker-end="url(#ah)"/>
+    <path d="M680 257 V303" marker-end="url(#ah)"/>
+    <!-- System check to AI scoring -->
+    <path d="M680 367 V445 H800" marker-end="url(#ah)"/>
+    <!-- AI scoring back to verification -->
+    <path d="M890 413 V367" marker-end="url(#ah)"/>
+    <!-- Verification: high or medium to results -->
+    <path d="M980 335 H1010" marker-end="url(#ah)"/>
+    <!-- Verification: low confidence to reviewer (left route) -->
+    <path d="M800 335 H780 V555 H800" marker-end="url(#ah)" stroke-dasharray="8 6"/>
+    <!-- Reviewer decision to results -->
+    <path d="M980 555 H1100 V367" marker-end="url(#ah)"/>
+    <!-- Results to learner -->
+    <path d="M1100 303 V257" marker-end="url(#ah)"/>
+    <!-- Learner practises an objective -->
+    <path d="M1190 225 H1220" marker-end="url(#ah)"/>
+    <!-- Practice goes to follow-up scoring (right route) -->
+    <path d="M1400 225 H1415 V445 H1400" marker-end="url(#ah)"/>
+    <!-- Follow-up result to system -->
+    <path d="M1310 413 V367" marker-end="url(#ah)"/>
+    <!-- Score change to system report -->
+    <path d="M1400 335 H1430" marker-end="url(#ah)"/>
+    <!-- Reports and export to partner -->
+    <path d="M1520 367 V633" marker-end="url(#ah)"/>
   </g>
-  <g font-size="13" fill="#4A5568">
-    <text x="1290" y="330" text-anchor="middle">High or medium</text>
-    <text x="1196" y="482">Low</text>
-    <text x="740" y="412" text-anchor="middle">Under 40 words: learner asked to expand</text>
-  </g>
 
-  <!-- Nodes: human steps (blue), system steps (grey), AI steps (amber), proposed platform (dashed) -->
-  <g stroke-width="2" font-size="16" text-anchor="middle">
-    <rect x="215" y="88" width="170" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
-    <text x="300" y="116" fill="#14213D">Author scenarios</text><text x="300" y="136" fill="#14213D">and rubric</text>
+  <!-- Nodes -->
+  <g stroke-width="2" font-size="15" text-anchor="middle">
+    <!-- Content owner (SME) -->
+    <rect x="590" y="83" width="180" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
+    <text x="680" y="111" fill="#14213D">Release skill area</text><text x="680" y="131" fill="#14213D">when thresholds met</text>
+    <rect x="380" y="83" width="180" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
+    <text x="470" y="111" fill="#14213D">Author scenarios</text><text x="470" y="131" fill="#14213D">and rubrics</text>
+    <rect x="800" y="83" width="180" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
+    <text x="890" y="111" fill="#14213D">Build reference set</text><text x="890" y="131" fill="#14213D">(40 per skill area)</text>
+    <rect x="1010" y="83" width="180" height="64" rx="8" fill="#FFFFFF" stroke="#5B6B82" stroke-dasharray="6 5"/>
+    <text x="1100" y="111" fill="#14213D">AI-assisted drafting</text><text x="1100" y="131" fill="#14213D">(coming soon)</text>
 
-    <rect x="435" y="88" width="170" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
-    <text x="520" y="116" fill="#14213D">Build reference set</text><text x="520" y="136" fill="#14213D">(40 responses)</text>
+    <!-- Learner -->
+    <rect x="380" y="193" width="180" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
+    <text x="470" y="221" fill="#14213D">Browse skills and</text><text x="470" y="241" fill="#14213D">start a scenario</text>
+    <rect x="590" y="193" width="180" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
+    <text x="680" y="221" fill="#14213D">Write and submit</text><text x="680" y="241" fill="#14213D">response</text>
+    <rect x="1010" y="193" width="180" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
+    <text x="1100" y="221" fill="#14213D">Read results and</text><text x="1100" y="241" fill="#14213D">feedback</text>
+    <rect x="1220" y="193" width="180" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
+    <text x="1310" y="221" fill="#14213D">Practise one</text><text x="1310" y="241" fill="#14213D">objective</text>
 
-    <rect x="655" y="88" width="170" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
-    <text x="740" y="116" fill="#14213D">Release skill when</text><text x="740" y="136" fill="#14213D">thresholds are met</text>
+    <!-- System -->
+    <rect x="590" y="303" width="180" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
+    <text x="680" y="331" fill="#14213D">Check 40+ words</text><text x="680" y="351" fill="#14213D">and relevance</text>
+    <rect x="800" y="303" width="180" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
+    <text x="890" y="331" fill="#14213D">Verify quotes;</text><text x="890" y="351" fill="#14213D">set confidence</text>
+    <rect x="1010" y="303" width="180" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
+    <text x="1100" y="331" fill="#14213D">Show scores and</text><text x="1100" y="351" fill="#14213D">feedback</text>
+    <rect x="1220" y="303" width="180" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
+    <text x="1310" y="331" fill="#14213D">Show score change</text><text x="1310" y="351" fill="#14213D">(follow-up)</text>
+    <rect x="1430" y="303" width="180" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
+    <text x="1520" y="331" fill="#14213D">Build reports;</text><text x="1520" y="351" fill="#14213D">export JSON, CSV</text>
 
-    <rect x="435" y="688" width="170" height="64" rx="8" fill="#FFFFFF" stroke="#5B6B82" stroke-dasharray="6 5"/>
-    <text x="520" y="716" fill="#14213D">Skill catalogue</text><text x="520" y="736" fill="#14213D">(proposed)</text>
+    <!-- AI model -->
+    <rect x="800" y="413" width="180" height="64" rx="8" fill="#FFF1D6" stroke="#C77700" stroke-width="2.5"/>
+    <text x="890" y="441" fill="#14213D">AI scores 0–3</text><text x="890" y="461" fill="#14213D">with quotes (×3)</text>
+    <rect x="1220" y="413" width="180" height="64" rx="8" fill="#FFF1D6" stroke="#C77700" stroke-width="2.5"/>
+    <text x="1310" y="441" fill="#14213D">AI scores follow-up</text><text x="1310" y="461" fill="#14213D">on one objective</text>
 
-    <rect x="435" y="208" width="170" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
-    <text x="520" y="236" fill="#14213D">Select skill and</text><text x="520" y="256" fill="#14213D">scenario</text>
+    <!-- Reviewer -->
+    <rect x="800" y="523" width="180" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
+    <text x="890" y="551" fill="#14213D">Review held result;</text><text x="890" y="571" fill="#14213D">confirm or override</text>
 
-    <rect x="655" y="208" width="170" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
-    <text x="740" y="236" fill="#14213D">Write and submit</text><text x="740" y="256" fill="#14213D">response</text>
-
-    <rect x="1315" y="208" width="170" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
-    <text x="1400" y="236" fill="#14213D">Read diagnosis</text><text x="1400" y="256" fill="#14213D">and feedback</text>
-
-    <rect x="1515" y="208" width="170" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
-    <text x="1600" y="236" fill="#14213D">Pick one objective</text><text x="1600" y="256" fill="#14213D">to practise</text>
-
-    <rect x="655" y="328" width="170" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
-    <text x="740" y="356" fill="#14213D">Check 40+ words and</text><text x="740" y="376" fill="#14213D">relevance; store</text>
-
-    <rect x="1095" y="328" width="170" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
-    <text x="1180" y="356" fill="#14213D">Verify quotes;</text><text x="1180" y="376" fill="#14213D">set confidence</text>
-
-    <rect x="1315" y="328" width="170" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
-    <text x="1400" y="356" fill="#14213D">Show scores and</text><text x="1400" y="376" fill="#14213D">evidence, feedback</text>
-
-    <rect x="1515" y="328" width="170" height="64" rx="8" fill="#EEF2F7" stroke="#5B6B82"/>
-    <text x="1600" y="356" fill="#14213D">Show score change</text><text x="1600" y="376" fill="#14213D">(follow-up)</text>
-
-    <rect x="875" y="448" width="170" height="64" rx="8" fill="#FFF1D6" stroke="#C77700" stroke-width="2.5"/>
-    <text x="960" y="476" fill="#14213D">AI scores 0–3</text><text x="960" y="496" fill="#14213D">with quotes (x3)</text>
-
-    <rect x="1515" y="448" width="170" height="64" rx="8" fill="#FFF1D6" stroke="#C77700" stroke-width="2.5"/>
-    <text x="1600" y="476" fill="#14213D">AI scores follow-up</text><text x="1600" y="496" fill="#14213D">on one objective</text>
-
-    <rect x="1095" y="568" width="170" height="64" rx="8" fill="#E8F0FA" stroke="#2F6F8F"/>
-    <text x="1180" y="596" fill="#14213D">Review held result;</text><text x="1180" y="616" fill="#14213D">confirm or override</text>
+    <!-- Integration partner -->
+    <rect x="380" y="633" width="180" height="64" rx="8" fill="#FFFFFF" stroke="#5B6B82" stroke-dasharray="6 5"/>
+    <text x="470" y="661" fill="#14213D">Launch assessment</text><text x="470" y="681" fill="#14213D">(API or embed)</text>
+    <rect x="1430" y="633" width="180" height="64" rx="8" fill="#FFFFFF" stroke="#5B6B82" stroke-dasharray="6 5"/>
+    <text x="1520" y="661" fill="#14213D">Receive results and</text><text x="1520" y="681" fill="#14213D">reports</text>
   </g>
 
   <!-- Legend -->
   <g font-size="14" fill="#4A5568">
-    <rect x="24" y="796" width="18" height="18" rx="3" fill="#FFF1D6" stroke="#C77700"/><text x="50" y="811">AI step</text>
-    <rect x="150" y="796" width="18" height="18" rx="3" fill="#E8F0FA" stroke="#2F6F8F"/><text x="176" y="811">Human step</text>
-    <rect x="300" y="796" width="18" height="18" rx="3" fill="#EEF2F7" stroke="#5B6B82"/><text x="326" y="811">System step</text>
-    <rect x="450" y="796" width="18" height="18" rx="3" fill="#FFFFFF" stroke="#5B6B82" stroke-dasharray="4 3"/><text x="476" y="811">Proposed, not confirmed</text>
+    <rect x="24" y="740" width="18" height="18" rx="3" fill="#FFF1D6" stroke="#C77700"/><text x="50" y="755">AI step</text>
+    <rect x="150" y="740" width="18" height="18" rx="3" fill="#E8F0FA" stroke="#2F6F8F"/><text x="176" y="755">Human step</text>
+    <rect x="300" y="740" width="18" height="18" rx="3" fill="#EEF2F7" stroke="#5B6B82"/><text x="326" y="755">System step</text>
+    <rect x="450" y="740" width="18" height="18" rx="3" fill="#FFFFFF" stroke="#5B6B82" stroke-dasharray="4 3"/><text x="476" y="755">Coming soon or partner-side</text>
+    <text x="760" y="755">Dashed arrows: release, partner launch, low-confidence route to reviewer</text>
   </g>
 </svg>

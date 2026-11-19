@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkillLens Prototype</title>
+<style>
+:root{--navy:#1F3350;--ink:#1D2733;--muted:#5B6777;--line:#D9DEE7;--soft:#EEF3F9;--paper:#F4F6F9;--yellow:#FFD84D;--amber:#7A4F00;--amberbg:#FFF1D6;--okbg:#E6F4EA;--ok:#1F6B3A;--hi:#FFF1C2}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.45}
+header{background:var(--navy);color:#fff;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+header .brand{font-weight:700;font-size:22px}
+header nav{display:flex;gap:6px}
+header nav button{background:none;border:0;color:#fff;font:inherit;font-size:15px;padding:20px 14px;cursor:pointer;border-bottom:3px solid transparent}
+header nav button.on{border-bottom-color:var(--yellow);font-weight:600}
+main{max-width:1344px;margin:0 auto;padding:24px 48px 40px}
+.notice{background:var(--amberbg);color:var(--amber);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:18px}
+.notice summary{cursor:pointer;font-weight:600}
+.notice ul{margin:6px 0 0 18px;padding:0}
+h1{font-size:30px;margin:4px 0 16px;color:var(--navy)}
+h2{font-size:18px;margin:0 0 8px;color:var(--navy)}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted);font-size:14px}
+.small{font-size:13px}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:#fff;font-size:13px}
+.chip.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tag{display:inline-block;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+.tag.soon{background:var(--yellow);color:var(--ink)}
+.tag.pend{background:var(--amberbg);color:var(--amber)}
+.tag.ok{background:var(--okbg);color:var(--ok)}
+.tag.plain{background:var(--soft);color:var(--navy)}
+button.btn,a.btn{font:inherit;font-size:15px;border-radius:8px;padding:10px 18px;cursor:pointer;border:1.5px solid var(--navy);background:var(--navy);color:#fff;text-decoration:none;display:inline-block}
+button.btn.sec{background:#fff;color:var(--navy)}
+button.btn.small{padding:6px 12px;font-size:13px}
+button:disabled{opacity:.45;cursor:not-allowed}
+details.skill{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:12px}
+details.skill>summary{list-style:none;cursor:pointer;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+details.skill>summary::-webkit-details-marker{display:none}
+details.skill>summary::after{content:"▾";color:var(--navy);font-size:18px;margin-left:12px}
+details.skill[open]>summary::after{content:"▴"}
+.skillname{font-size:20px;font-weight:700;color:var(--navy)}
+.scenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 24px 24px}
+.scen{border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.scen h3{margin:0;font-size:16px;color:var(--navy)}
+.soonrow{background:#FAFAFA;border:1px solid var(--line);border-radius:12px;padding:18px 24px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:18px;font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+textarea,select,input[type=text]{width:100%;font:inherit;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+textarea{min-height:300px;resize:vertical}
+textarea.short{min-height:90px}
+.quote{background:#FBFCFE;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;margin:8px 0}
+.obj{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.bar{background:var(--soft);border-radius:8px;padding:10px 14px;font-size:14px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{background:var(--soft);color:var(--navy);font-weight:700}
+.err{color:#8B1E1E;font-size:14px;margin-top:8px}
+.footer{color:var(--muted);font-size:13px;text-align:center;margin-top:28px}
+.toolbar{display:flex;gap:10px;justify-content:flex-end;margin-bottom:14px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.tabs button{background:none;border:0;font:inherit;padding:12px 16px;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent}
+.tabs button.on{color:var(--navy);font-weight:700;border-bottom-color:var(--navy)}
+.hl{background:var(--hi);border-radius:3px;padding:0 2px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">SkillLens</div>
+  <nav>
+    <button id="nav-learner" onclick="setMode('learner')">Learner</button>
+    <button id="nav-reviewer" onclick="setMode('reviewer')">Reviewer</button>
+  </nav>
+</header>
+<main>
+  <div class="notice">
+    <strong>Prototype.</strong> Scoring is scripted (no live model). Quotations come from the response; confidence comes from how the response matches the rubric. All learners, responses and report values are synthetic. Not a validated assessment.
+    <details style="margin-top:6px">
+      <summary>What this prototype does not prove</summary>
+      <ul>
+        <li>Scoring accuracy: no live model is used and no reference set has been scored.</li>
+        <li>Confidence: the three-run agreement rule is not implemented; low-confidence results are held only when a learner requests review.</li>
+        <li>Coverage: three scenarios per live skill area; three skill areas are coming soon.</li>
+        <li>Learning effect and fairness: not tested.</li>
+        <li>Integration: the API and CSV/JSON exports are downloadable files, not a live partner connection.</li>
+      </ul>
+    </details>
+  </div>
+  <div id="app"></div>
+  <p class="footer">Development guidance, not a performance rating.</p>
+</main>
+
+<script>
+/* ---------------- Content ---------------- */
+
+const SKILLS = [
+  {
+    id: 'dsa', name: 'Data Structures and Algorithms', scenarios: ['dsa1', 'dsa2', 'dsa3'],
+    objectives: [
+      { id: 'O1', name: 'Choose the data structure',
+        cues: { L1: ['structure', 'heap', 'hash map', 'deque', 'bucket', 'graph', 'queue'],
+                L2: ['min-heap', 'hash map', 'breadth-first', 'bfs', 'deque', 'bucket', 'adjacency list', 'dijkstra', 'a*'],
+                L3: ['instead of sorting', 'rather than sorting', 'full sort', 'top k', 'top-k', 'size k', 'size of k', 'unweighted', 'weighted'] },
+        fb: ['Name the structure you would use and why it fits the update pattern.',
+             'Say what the structure stores and how the update works.',
+             'State what you would do when the data changes shape, such as a weighted graph.'],
+        fu: 'Describe which data structure you would use to keep the top 10 items current, and why you would not sort after every update.' },
+      { id: 'O2', name: 'Analyse time complexity',
+        cues: { L1: ['complexity', 'time', 'log', 'o('],
+                L2: ['o(log', 'o(v + e', 'o(v+e', 'o(1)', 'amortised', 'amortized'],
+                L3: ['each update', 'per update', 'per request', 'read the top', 'lookup', 'bounded by', 'cost of'] },
+        fb: ['State the complexity of the main operation.',
+             'Give the complexity in terms of the right variables, such as K or V and E.',
+             'Explain the cost of each part of the operation, including lookups.'],
+        fu: 'Explain the time complexity of one update in your design, in terms of the variables that matter.' },
+      { id: 'O3', name: 'Analyse space complexity',
+        cues: { L1: ['memory', 'space', 'storage'],
+                L2: ['o(n)', 'o(k)', 'unique items', 'adjacency', 'bounded', 'stays at'],
+                L3: ['trade-off', 'trade off', 'memory grows', 'keeps only', 'lazy', 'expired', 'does not grow'] },
+        fb: ['Mention what takes memory in your design.',
+             'Compare the memory of the stored items with the memory of the top K.',
+             'Explain the trade-off and what bounds the memory growth.'],
+        fu: 'Describe how much memory your design uses as the number of items grows, and what keeps it bounded.' },
+      { id: 'O4', name: 'Explain trade-offs and limits',
+        cues: { L1: ['limitation', 'trade-off', 'trade off', 'downside'],
+                L2: ['ties', 'approximate', 'weights', 'stale', 'burst', 'accuracy', 'tie'],
+                L3: ['would change', 'fails when', 'breaks when', 'for very large', 'instead', 'if the weights'] },
+        fb: ['Name one limitation of your approach.',
+             'Explain a limitation that affects the results, such as ties or stale data.',
+             'Explain when the approach fails and what you would change.'],
+        fu: 'Name one situation in which your approach would give a wrong or misleading answer, and what you would change.' }
+    ]
+  },
+  {
+    id: 'com', name: 'Communication', scenarios: ['com1', 'com2', 'com3'],
+    objectives: [
+      { id: 'C1', name: 'Structure the message',
+        cues: { L1: ['first', 'then', 'next', 'finally', 'summary', 'key point'],
+                L2: ['key point', 'bottom line', 'recommendation', 'next step', 'the impact', 'the reason'],
+                L3: ['so that the', 'which means', 'as a result', 'this matters', 'owner'] },
+        fb: ['Put the message in parts, such as impact, reason and next steps.',
+             'Lead with the key point, then the reason and next steps.',
+             'Explain why this order helps the reader act on the message.'],
+        fu: 'Describe how you would structure a two-minute update to your manager about a delayed project.' },
+      { id: 'C2', name: 'Adapt to the audience',
+        cues: { L1: ['audience', 'non-technical', 'plain', 'simple', 'without jargon'],
+                L2: ['for example', 'example', 'analogy', 'plain language', 'avoid jargon', 'in simple terms'],
+                L3: ['they care about', 'their priority', 'their goal', 'impact on', 'because they', 'finance'] },
+        fb: ['Say who the audience is and what they already know.',
+             'Use plain language or an example that fits the audience.',
+             'Explain what the audience cares about and why you chose that detail.'],
+        fu: 'Describe how you would explain a technical data issue to a non-technical audience.' },
+      { id: 'C3', name: 'Handle questions and challenge',
+        cues: { L1: ['question', 'acknowledge', 'answer', 'respond'],
+                L2: ['acknowledge', 'follow up', 'clarify', 'i will check', 'i will confirm'],
+                L3: ['evidence', 'timeline', 'options', 'i will commit', 'data'] },
+        fb: ['Answer the question directly before any explanation.',
+             'Acknowledge the concern, clarify it, and say what you will check.',
+             'Support the answer with evidence or options and a timeline.'],
+        fu: 'Describe how you would respond when a senior stakeholder challenges your recommendation in a meeting.' },
+      { id: 'C4', name: 'Write concisely',
+        cues: { L1: ['shorter', 'concise', 'cut', 'remove', 'short'],
+                L2: ['key point', 'one sentence', 'bottom line', 'first sentence', 'lead with'],
+                L3: ['without losing', 'the goal is', 'kept', 'keeps the'] },
+        fb: ['Remove the parts that do not help the reader.',
+             'Lead with the key point in the first sentence.',
+             'Explain what you kept and why the shorter version still carries the meaning.'],
+        fu: 'Describe how you would shorten a long status email without losing the key point.' }
+    ]
+  },
+  {
+    id: 'gai', name: 'Generative AI', scenarios: ['gai1', 'gai2', 'gai3'],
+    objectives: [
+      { id: 'G1', name: 'Frame the problem',
+        cues: { L1: ['problem', 'task', 'request', 'question'],
+                L2: ['documents change', 'change', 'current', 'up to date', 'sensitive', 'data'],
+                L3: ['citation', 'cost of updates', 'update cost', 'frequency', 'monthly', 'constraint'] },
+        fb: ['State the task and who it affects.',
+             'Identify what changes over time or what is sensitive.',
+             'Identify the constraints, such as update frequency, citations or cost.'],
+        fu: 'Describe the main constraints you would check before choosing an approach for a document-based assistant.' },
+      { id: 'G2', name: 'Choose an approach and justify it',
+        cues: { L1: ['retrieval', 'fine-tun', 'rag', 'approach', 'model'],
+                L2: ['retrieval', 'rag', 'fine-tun', 'chose', 'choose', 'recommend'],
+                L3: ['compare', 'trade-off', 'trade off', 'maintenance', 'accuracy', 'cost'] },
+        fb: ['Name the approach you would use.',
+             'Choose an approach and give a reason.',
+             'Compare the options and explain the trade-off you accepted.'],
+        fu: 'Compare two approaches for a support assistant and recommend one, with the reason and the trade-off.' },
+      { id: 'G3', name: 'Evaluate output quality',
+        cues: { L1: ['check', 'evaluate', 'review', 'test', 'sample'],
+                L2: ['sample', 'compare against', 'against the source', 'source documents', 'transcript', 'human check'],
+                L3: ['accuracy', 'threshold', 'error rate', 'measure', 'percent', '%'] },
+        fb: ['Say how you would check the output.',
+             'Describe a check against the source material.',
+             'Describe a measure, such as an error rate, and a threshold.'],
+        fu: 'Describe how you would measure whether the output of a summary tool is accurate enough to use.' },
+      { id: 'G4', name: 'Manage risk and data',
+        cues: { L1: ['risk', 'privacy', 'sensitive', 'leak'],
+                L2: ['control', 'redact', 'access', 'escalat', 'citation'],
+                L3: ['retention', 'audit', 'consent', 'policy', 'human', 'escalation'] },
+        fb: ['Name one risk.',
+             'Name a control for that risk.',
+             'Explain how the controls are audited or escalated.'],
+        fu: 'Name one data risk in prompts and the control you would put in place for it.' }
+    ]
+  }
+];
+
+const COMING_SOON = ['Docker', 'Product management', 'Leadership'];
+
+const SCENARIOS = {
+  dsa1: { skill: 'dsa', title: 'The High-Traffic Flash Sale', focus: 'Heaps and top-K tracking', minutes: 15,
+    text: 'You are engineering the backend for an e-commerce flash sale. A live leaderboard shows the top 10 best-selling items, updated as purchases arrive. Sorting after every purchase is too slow. Which data structure and algorithm maintain the top 10 efficiently, what is the time complexity of an incoming purchase, and what are the memory trade-offs for tracking unique items?' },
+  dsa2: { skill: 'dsa', title: 'Degrees of Separation', focus: 'Graph traversal and shortest path', minutes: 15,
+    text: 'A professional network needs the shortest connection path between two users in a graph with hundreds of millions of nodes. Which traversal finds the shortest path in an unweighted graph, what is its time complexity, how would you store the graph, and how would you handle weighted connections that represent interaction strength?' },
+  dsa3: { skill: 'dsa', title: 'The Rate Limiter for API Protection', focus: 'Sliding windows and deques', minutes: 15,
+    text: 'Each user may make at most 100 requests in any 60-second window. Storing every timestamp uses too much memory. Design the data structures and data flow for a sliding-window limiter with minimal latency, explain its amortised time per check, and show how expired entries are removed so memory does not grow.' },
+  com1: { skill: 'com', title: 'Project Delay Message', focus: 'Structuring a difficult update', minutes: 10,
+    text: 'A project will slip by two weeks because a data-quality issue was found in the customer file. Your manager must tell the finance director by tomorrow. Write the message you would send, including the impact, the reason and what you will do next.' },
+  com2: { skill: 'com', title: 'Explaining a Report Format', focus: 'Explaining to a newcomer', minutes: 10,
+    text: 'A new team member asks why the team uses a particular report format, which they find confusing. Write how you would explain it. Then answer the follow-up question: why not just change the format?' },
+  com3: { skill: 'com', title: 'Handling a Senior Challenge', focus: 'Responding under challenge', minutes: 10,
+    text: 'During a review, a senior stakeholder challenges your recommendation to delay a launch. Write how you would respond, including what you would acknowledge, what evidence you would give, and the next step you would commit to.' },
+  gai1: { skill: 'gai', title: 'Choosing an Approach for a Support Assistant', focus: 'Retrieval or fine-tuning', minutes: 15,
+    text: 'A company wants an assistant that answers questions from its policy documents, which change every month. Compare retrieval-augmented generation with fine-tuning, recommend one, and explain the trade-off in cost, accuracy and maintenance.' },
+  gai2: { skill: 'gai', title: 'Judging a Summary Tool', focus: 'Evaluating output quality', minutes: 15,
+    text: 'A summary tool shortens customer calls into notes. A manager asks whether to trust it. Describe how you would judge its output, including the sample you would check, the error types you would measure, and the threshold you would require.' },
+  gai3: { skill: 'gai', title: 'Sensitive Data in Prompts', focus: 'Risk and data controls', minutes: 15,
+    text: 'Staff want to paste customer records into a language model to draft replies. Advise what to allow and why. Name the risks, the controls for each, and how the controls would be audited.' }
+};
+
+/* ---------------- Scoring (scripted) ---------------- */
+
+const MIN_WORDS = 40;
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function words(t) { const w = t.trim(); return w ? w.split(/\s+/).length : 0; }
+function sentences(t) { return t.split(/(?<=[.!?])\s+|\n+/).map(s => s.trim()).filter(Boolean); }
+
+function skillOf(scenId) { return SKILLS.find(s => s.id === SCENARIOS[scenId].skill); }
+
+function scoreObjective(obj, text) {
+  const lower = text.toLowerCase();
+  const hit = arr => arr.filter(c => lower.includes(c));
+  const h1 = hit(obj.cues.L1), h2 = hit(obj.cues.L2), h3 = hit(obj.cues.L3);
+  const matched = h1.length + h2.length + h3.length;
+  let level = 0;
+  if (h1.length) level = 1;
+  if (h2.length) level = 2;
+  if (h2.length && h3.length) level = 3;
+  if (level === 0) return { id: obj.id, level: 0, quote: 'none', borderline: false, matched };
+  const tiers = level === 3 ? [h3, h2] : level === 2 ? [h2] : [h1];
+  let sent;
+  for (const tier of tiers) {
+    sent = sentences(text).find(x => tier.some(c => x.toLowerCase().includes(c)));
+    if (sent) break;
+  }
+  if (!sent) return { id: obj.id, level: 0, quote: 'none', borderline: false, matched };
+  const verified = text.includes(sent);
+  const borderline = (level === 2 && h2.length === 1) || (level === 3 && h2.length + h3.length <= 2);
+  return { id: obj.id, level, quote: sent, verified, borderline, matched };
+}
+
+function scoreScenario(scenId, text) {
+  const skill = skillOf(scenId);
+  const results = skill.objectives.map(o => scoreObjective(o, text));
+  const scenScore = results.reduce((a, r) => a + r.level, 0) / results.length;
+  let conf = 'high';
+  if (results.every(r => r.matched === 0)) conf = 'off';
+  else if (results.some(r => r.verified === false)) conf = 'low';
+  else if (results.some(r => r.borderline)) conf = 'medium';
+  return { results, scenScore, conf };
+}
+
+function scoreOne(objId, skillId, text) {
+  const skill = SKILLS.find(s => s.id === skillId);
+  const obj = skill.objectives.find(o => o.id === objId);
+  const r = scoreObjective(obj, text);
+  const conf = r.matched === 0 ? 'off' : (r.verified === false ? 'low' : (r.borderline ? 'medium' : 'high'));
+  return { ...r, conf };
+}
+
+/* ---------------- Synthetic data (seeded) ---------------- */
+
+let seed = 20261114;
+function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+function round1(x) { return Math.round(x * 10) / 10; }
+
+const SYN_LEARNERS = [];
+for (let i = 1; i <= 24; i++) SYN_LEARNERS.push('L-' + String(1000 + i));
+const SYN = {}; // learnerId -> { scenId: { first, latest, objs:[..], conf, comment } }
+const SYN_FOLLOW = []; // { learner, skill, obj, first, follow, comment }
+const SYN_COMMENTS = ['Clear structure choice.', 'Add the memory bound.', 'Explain the trade-off more clearly.',
+  'Name the sampling method.', '', '', '', ''];
+for (const L of SYN_LEARNERS) {
+  SYN[L] = {};
+  for (const skill of SKILLS) {
+    const attempted = rnd() < 0.7;
+    if (!attempted) continue;
+    for (const sc of skill.scenarios) {
+      if (rnd() < 0.35) continue;
+      const base = 1 + rnd() * 2.2;
+      const first = round1(Math.max(0, Math.min(3, base)));
+      const latest = round1(Math.max(0, Math.min(3, first + (rnd() < 0.5 ? rnd() * 1.2 : -rnd() * 0.4))));
+      const objs = [0, 1, 2, 3].map(() => round1(Math.max(0, Math.min(3, latest + (rnd() - 0.5) * 0.8))));
+      SYN[L][sc] = { first, latest, objs, conf: pick(['high', 'high', 'medium']), comment: pick(SYN_COMMENTS) };
+    }
+  }
+}
+for (let i = 0; i < 10; i++) {
+  const L = pick(SYN_LEARNERS);
+  const skill = pick(SKILLS);
+  const obj = pick(skill.objectives);
+  const first = Math.floor(rnd() * 3);
+  SYN_FOLLOW.push({ learner: L, skill: skill.id, obj: obj.id, first, follow: Math.min(3, first + (rnd() < 0.6 ? 1 : 0)) });
+}
+
+/* ---------------- App state ---------------- */
+
+const S = {
+  mode: 'learner', view: 'browse', scenId: 'dsa1', open: { dsa: true },
+  me: 'L-0001', mine: {}, followups: [], queue: [], nextId: 1,
+  response: '', err: '', waitId: null, reviewId: null, fu: null, fuText: '', rtab: 'scenario', rview: 'queue'
+};
+
+// Pending items from synthetic learners (for the reviewer queue)
+function seedQueue() {
+  const pendingFrom = [
+    ['L-1003', 'dsa2', 'Low confidence'], ['L-1011', 'gai1', 'Learner request'],
+    ['L-1017', 'com2', 'Unverified quotation'], ['L-1022', 'gai3', 'Learner request']
+  ];
+  pendingFrom.forEach(([L, sc, why]) => {
+    const text = SCENARIOS[sc].text;
+    const r = scoreScenario(sc, text + ' ' + text);
+    S.queue.push({ id: S.nextId++, learner: L, scen: sc, why, text: text + ' ' + text, results: r.results,
+      status: 'pending', final: null, comment: '', submitted: '11 Nov 2026, 14:20', synthetic: true });
+  });
+}
+seedQueue();
+
+/* ---------------- Learner data helpers ---------------- */
+
+function mySkillScores(skillId, data) {
+  // latest scenario scores for attempted scenarios in a skill
+  const skill = SKILLS.find(s => s.id === skillId);
+  const vals = skill.scenarios.filter(sc => data[sc]).map(sc => data[sc].latest);
+  return vals;
+}
+function skillProficiency(skillId, data) {
+  const v = mySkillScores(skillId, data);
+  return v.length ? round1(v.reduce((a, b) => a + b, 0) / v.length) : null;
+}
+function attemptedCount(skillId, data) {
+  return mySkillScores(skillId, data).length;
+}
+
+/* ---------------- Views ---------------- */
+
+function setMode(m) {
+  S.mode = m;
+  S.view = m === 'reviewer' ? 'queue' : 'browse';
+  S.err = '';
+  render();
+}
+function go(v) { S.view = v; S.err = ''; render(); }
+
+function startScenario(id) { S.scenId = id; S.response = ''; S.err = ''; S.view = 'scenario'; render(); }
+
+function submitScenario() {
+  const n = words(S.response);
+  if (n < MIN_WORDS) { S.err = `Please expand your response to at least ${MIN_WORDS} words (currently ${n}).`; render(); return; }
+  const r = scoreScenario(S.scenId, S.response);
+  if (r.conf === 'off') { S.err = 'The response does not address the scenario. Please revise it.'; render(); return; }
+  const prev = S.mine[S.scenId];
+  const rec = { first: prev ? prev.first : round1(r.scenScore), latest: round1(r.scenScore), conf: r.conf,
+    results: r.results, scenScore: round1(r.scenScore), comment: '', text: S.response };
+  S.mine[S.scenId] = rec;
+  if (r.conf === 'low') {
+    const item = addHeld(S.scenId, 'Low confidence', S.response, r.results);
+    S.waitId = item.id;
+    S.view = 'pending';
+  } else {
+    S.view = 'results';
+  }
+  S.err = '';
+  render();
+}
+
+function addHeld(scenId, why, text, results) {
+  const item = { id: S.nextId++, learner: S.me, scen: scenId, why, text, results, status: 'pending',
+    final: null, comment: '', submitted: 'Today', synthetic: false };
+  S.queue.push(item);
+  return item;
+}
+
+function requestReview() {
+  const rec = S.mine[S.scenId];
+  const item = addHeld(S.scenId, 'Learner request', rec.text, rec.results);
+  S.waitId = item.id;
+  S.view = 'pending';
+  render();
+}
+
+function startFollow(objId) {
+  S.fu = { obj: objId, skill: skillOf(S.scenId).id };
+  S.fuText = '';
+  S.err = '';
+  S.view = 'followup';
+  render();
+}
+
+function submitFollow() {
+  const n = words(S.fuText);
+  if (n < MIN_WORDS) { S.err = `Please expand your response to at least ${MIN_WORDS} words (currently ${n}).`; render(); return; }
+  const r = scoreOne(S.fu.obj, S.fu.skill, S.fuText);
+  if (r.conf === 'off') { S.err = 'The response does not address the objective. Please revise it.'; render(); return; }
+  const rec = S.mine[S.scenId];
+  const first = rec.results.find(x => x.id === S.fu.obj).level;
+  S.fu.result = r;
+  S.fu.first = first;
+  S.followups.push({ learner: S.me, skill: S.fu.skill, obj: S.fu.obj, first, follow: r.level, scen: S.scenId });
+  S.view = 'followresult';
+  render();
+}
+
+function saveReview() {
+  const item = S.queue.find(q => q.id === S.reviewId);
+  const reason = (document.getElementById('reason') || { value: '' }).value.trim();
+  const comment = (document.getElementById('comment') || { value: '' }).value.trim();
+  let overrides = false;
+  const finals = item.results.map((r, i) => {
+    const dec = document.getElementById('dec-' + i).value;
+    if (dec === 'override') {
+      overrides = true;
+      return { ...r, final: parseInt(document.getElementById('ov-' + i).value, 10) };
+    }
+    return { ...r, final: r.level };
+  });
+  if (overrides && !reason) { S.err = 'A reason is required for any override.'; render(); return; }
+  item.final = finals;
+  item.status = overrides ? 'overridden' : 'confirmed';
+  item.reason = reason;
+  item.comment = comment;
+  item.reviewed = 'Today';
+  S.reviewId = null;
+  S.err = '';
+  S.view = 'queue';
+  render();
+}
+
+/* ---------------- Rendering: learner ---------------- */
+
+function latestLabel(scenId) {
+  const rec = S.mine[scenId];
+  return rec ? `Latest score ${round1(rec.latest)} of 3` : 'Not attempted';
+}
+
+function renderBrowse() {
+  let html = '<h1>Browse skills</h1>';
+  for (const skill of SKILLS) {
+    const prof = skillProficiency(skill.id, S.mine);
+    const n = attemptedCount(skill.id, S.mine);
+    const right = prof === null ? 'Not yet attempted' : `Proficiency ${prof} of 3 · ${n} of 3 scenarios attempted`;
+    const isOpen = S.open[skill.id] ? ' open' : '';
+    html += `<details class="skill"${isOpen} ontoggle="S.open['${skill.id}']=this.open">
+      <summary><span><span class="skillname">${esc(skill.name)}</span> <span class="muted">· 3 scenarios</span></span><span class="small">${esc(right)}</span></summary>
+      <div class="scenarios">`;
+    for (const sc of skill.scenarios) {
+      const s = SCENARIOS[sc];
+      const rec = S.mine[sc];
+      html += `<div class="scen">
+        <h3>${esc(s.title)}</h3>
+        <div class="muted small">${esc(s.focus)} · ${s.minutes} min</div>
+        <div><span class="chip ${rec ? 'navy' : ''}">${esc(latestLabel(sc))}</span></div>
+        <div style="margin-top:auto"><button class="btn small ${rec ? 'sec' : ''}" onclick="startScenario('${sc}')">${rec ? 'Retake' : 'Start'}</button></div>
+      </div>`;
+    }
+    html += '</div></details>';
+  }
+  for (const name of COMING_SOON) {
+    html += `<div class="soonrow"><span>${esc(name)}</span><span class="tag soon">Coming soon</span></div>`;
+  }
+  return html;
+}
+
+function renderScenario() {
+  const s = SCENARIOS[S.scenId];
+  const skill = skillOf(S.scenId);
+  const idx = skill.scenarios.indexOf(S.scenId) + 1;
+  let html = `<div class="muted small">Browse skills › ${esc(skill.name)} › Scenario ${idx} of 3</div>
+    <h1>${esc(s.title)}</h1>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:16px"><p style="margin:0;font-size:16px">${esc(s.text)}</p></div>
+        <div class="card"><h2>You will be assessed on</h2><ul style="margin:0;padding-left:20px">`;
+  for (const o of skill.objectives) html += `<li>${esc(o.name)}</li>`;
+  html += `</ul></div>
+      </div>
+      <div class="card">
+        <h2>Your response</h2>
+        <textarea id="resp" oninput="S.response=this.value;document.getElementById('wc').textContent='Words: '+words(this.value);document.getElementById('sub').disabled=!this.value.trim()" placeholder="Explain your reasoning and the steps you would take.">${esc(S.response)}</textarea>
+        <div class="row" style="margin-top:10px"><span class="muted small" id="wc">Words: ${words(S.response)}</span><span class="muted small">At least ${MIN_WORDS} words</span></div>
+        ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}
+        <div class="row" style="margin-top:14px"><button class="btn sec" onclick="go('browse')">Back</button>
+        <button class="btn" id="sub" ${S.response.trim() ? '' : 'disabled'} onclick="submitScenario()">Submit</button></div>
+      </div>
+    </div>`;
+  return html;
+}
+
+function objectiveCard(o, r, showFollow) {
+  const lvl = r.final !== undefined ? r.final : r.level;
+  const name = o.name;
+  let html = `<div class="obj"><div class="row"><b style="color:var(--navy);font-size:17px">${esc(o.id)} · ${esc(name)}</b>
+    <span class="tag plain">Score ${lvl} of 3</span></div>`;
+  html += r.quote === 'none' || !r.quote
+    ? '<div class="quote">No supporting evidence found in the response.</div>'
+    : `<div class="muted small" style="margin-top:8px">From your response</div><div class="quote">“${esc(r.quote)}”</div>`;
+  if (lvl < 3) {
+    html += `<div class="row"><span class="small"><b>To reach the next level:</b> ${esc(o.fb[lvl])}</span>`;
+    if (showFollow) html += `<button class="btn small sec" onclick="startFollow('${o.id}')">Practise this objective</button>`;
+    html += '</div>';
+  } else {
+    html += '<div class="small" style="color:var(--ok)">Level 3 reached for this objective.</div>';
+  }
+  return html + '</div>';
+}
+
+function renderResults() {
+  const rec = S.mine[S.scenId];
+  const skill = skillOf(S.scenId);
+  const prof = skillProficiency(skill.id, S.mine);
+  const n = attemptedCount(skill.id, S.mine);
+  const confLabel = rec.conf === 'high' ? 'Confidence: High' : 'Confidence: Medium';
+  let html = `<h1>Your results</h1>
+    <div class="row" style="margin-bottom:14px"><span class="chip navy">Scenario score ${round1(rec.scenScore)} of 3</span><span class="chip">${confLabel}</span></div>`;
+  if (rec.conf === 'medium') html += '<div class="bar">Some results were borderline. A second scenario would give a more reliable picture.</div>';
+  html += `<div class="grid2"><div>`;
+  skill.objectives.forEach(o => {
+    const r = rec.results.find(x => x.id === o.id);
+    html += objectiveCard(o, r, true);
+  });
+  html += `</div><div>
+    <div class="card" style="margin-bottom:16px"><h2>Skill proficiency: ${esc(skill.name)}</h2>
+      <div style="font-size:34px;font-weight:700;color:var(--navy)">${prof} of 3</div>
+      <div class="muted small">Based on ${n} of 3 scenarios attempted. Scenarios not yet attempted are not counted.</div></div>
+    <div class="row"><button class="btn sec" onclick="go('browse')">Browse skills</button><button class="btn sec" onclick="requestReview()">Request review</button></div>
+  </div></div>`;
+  return html;
+}
+
+function renderPending() {
+  const item = S.queue.find(q => q.id === S.waitId);
+  if (!item) return '<h1>No result is waiting.</h1><button class="btn" onclick="go(\'browse\')">Back to browse</button>';
+  if (item.status === 'pending') {
+    return `<div class="card" style="max-width:720px;margin:40px auto;text-align:center;padding:40px">
+      <h1>A reviewer will confirm this result.</h1>
+      <p class="muted">No score is shown until a reviewer has checked it. Your response has been saved.</p>
+      <p><span class="tag pend">Pending review</span></p>
+      <p class="muted small">Submitted ${esc(item.submitted)}</p>
+      <div class="row" style="justify-content:center"><button class="btn sec" onclick="go('browse')">Back to browse skills</button>
+      <button class="btn" onclick="startScenario('${item.scen}')">Try another scenario</button></div></div>`;
+  }
+  const skill = skillOf(item.scen);
+  let html = `<h1>Reviewed result</h1>
+    <div class="bar">Reviewed ${esc(item.reviewed || '')}. ${item.status === 'confirmed' ? 'Scores: confirmed by reviewer.' : 'Scores: adjusted by reviewer.'}</div>`;
+  if (item.comment) html += `<div class="card" style="margin-bottom:16px"><div class="label">Reviewer comment</div><p style="margin:6px 0 0">${esc(item.comment)}</p></div>`;
+  html += '<div class="grid2"><div>';
+  skill.objectives.forEach(o => {
+    const r = item.final.find(x => x.id === o.id);
+    html += objectiveCard(o, r, false);
+  });
+  html += '</div><div><button class="btn sec" onclick="go(\'browse\')">Back to browse skills</button></div></div>';
+  return html;
+}
+
+function renderFollowup() {
+  const o = SKILLS.find(s => s.id === S.fu.skill).objectives.find(x => x.id === S.fu.obj);
+  return `<div class="muted small">Practise · ${esc(o.id)}</div>
+    <h1>${esc(o.name)}</h1>
+    <div class="grid2"><div class="card"><div class="muted small">Follow-up prompt</div><p style="font-size:16px">${esc(o.fu)}</p></div>
+    <div class="card"><h2>Your follow-up</h2>
+      <textarea id="fu" oninput="S.fuText=this.value;document.getElementById('fuwc').textContent='Words: '+words(this.value)">${esc(S.fuText)}</textarea>
+      <div class="row" style="margin-top:10px"><span class="muted small" id="fuwc">Words: ${words(S.fuText)}</span><span class="muted small">At least ${MIN_WORDS} words</span></div>
+      ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}
+      <div class="row" style="margin-top:14px"><button class="btn sec" onclick="go('results')">Back to results</button><button class="btn" onclick="submitFollow()">Submit follow-up</button></div>
+    </div></div>`;
+}
+
+function renderFollowResult() {
+  const r = S.fu.result;
+  const diff = r.level - S.fu.first;
+  const change = diff > 0 ? `Up ${diff} level${diff > 1 ? 's' : ''}` : diff < 0 ? `Down ${-diff} level${diff < -1 ? 's' : ''}` : 'No change';
+  const o = SKILLS.find(s => s.id === S.fu.skill).objectives.find(x => x.id === S.fu.obj);
+  return `<h1>Objective: ${esc(o.name)}</h1>
+    <div class="grid2"><div>
+      <div class="card" style="margin-bottom:12px"><div>First attempt: <b>${S.fu.first} of 3</b></div></div>
+      <div class="card"><div>Follow-up: <b>${r.level} of 3</b></div><div style="color:var(--ok);font-weight:700;margin-top:6px">${change}</div></div>
+    </div><div>
+      <div class="card"><div class="label">Your follow-up</div><div class="quote">${r.quote === 'none' ? 'No supporting evidence found in your follow-up.' : '“' + esc(r.quote) + '”'}</div>
+      ${r.level < 3 ? `<p class="small"><b>To reach the next level:</b> ${esc(o.fb[r.level])}</p>` : ''}</div>
+      <div class="row" style="margin-top:14px"><button class="btn sec" onclick="go('results')">Back to results</button><button class="btn" onclick="go('browse')">Done</button></div>
+    </div></div>`;
+}
+
+/* ---------------- Rendering: reviewer ---------------- */
+
+function renderReviewerTabs(active) {
+  const tabs = [['queue', 'Review requests'], ['authoring', 'Authoring'], ['reports', 'Reports']];
+  return '<div class="tabs">' + tabs.map(([k, l]) =>
+    `<button class="${k === active ? 'on' : ''}" onclick="go('${k}')">${l}</button>`).join('') + '</div>';
+}
+
+function renderQueue() {
+  let html = renderReviewerTabs('queue') + '<h1>Review requests</h1>';
+  html += '<table><tr><th>Learner</th><th>Skill area</th><th>Scenario</th><th>Submitted</th><th>Reason</th><th>Status</th><th></th></tr>';
+  S.queue.slice().reverse().forEach(q => {
+    const s = SCENARIOS[q.scen];
+    const tag = { pending: 'pend', confirmed: 'ok', overridden: 'plain' }[q.status];
+    html += `<tr><td>${esc(q.learner)}</td><td>${esc(SKILLS.find(k => k.id === s.skill).name)}</td><td>${esc(s.title)}</td>
+      <td>${esc(q.submitted)}</td><td>${esc(q.why)}</td><td><span class="tag ${tag}">${esc(q.status)}</span></td>
+      <td>${q.status === 'pending' ? `<button class="btn small sec" onclick="openReview(${q.id})">Review</button>` : ''}</td></tr>`;
+  });
+  html += '</table><p class="muted small">Learners in this table are synthetic, except where noted.</p>';
+  return html;
+}
+
+function openReview(id) { S.reviewId = id; S.err = ''; S.view = 'review'; render(); }
+
+function renderReview() {
+  const item = S.queue.find(q => q.id === S.reviewId);
+  const skill = skillOf(item.scen);
+  let html = renderReviewerTabs('queue') + `<div class="row"><h1>Review · ${esc(item.learner)}</h1><button class="btn sec" onclick="go('queue')">Back to queue</button></div>
+    <div class="grid2"><div class="card"><div class="label">Learner response</div><p style="white-space:pre-wrap">${esc(item.text)}</p></div>
+    <div class="card"><h2>AI scoring</h2>
+    <table><tr><th>Objective</th><th>Score</th><th>Quote</th><th>Decision</th></tr>`;
+  skill.objectives.forEach((o, i) => {
+    const r = item.results.find(x => x.id === o.id);
+    html += `<tr><td>${esc(o.id)} ${esc(o.name)}</td><td>${r.level}</td>
+      <td class="small">${r.quote === 'none' ? 'none' : '“' + esc(r.quote) + '”'}</td>
+      <td><select id="dec-${i}"><option value="confirm">Confirm</option><option value="override">Override</option></select>
+      <select id="ov-${i}" style="margin-top:6px">${[0, 1, 2, 3].map(n => `<option value="${n}" ${n === r.level ? 'selected' : ''}>${n}</option>`).join('')}</select></td></tr>`;
+  });
+  html += `</table>
+    <div class="label" style="margin-top:14px">Reason for override (required for any override)</div><textarea id="reason" class="short"></textarea>
+    <div class="label" style="margin-top:10px">Comment for learner (optional, shown on their result). Do not include personal details.</div><textarea id="comment" class="short"></textarea>
+    ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}
+    <div class="row" style="margin-top:14px"><button class="btn sec" onclick="go('queue')">Cancel</button><button class="btn" onclick="saveReview()">Save decision</button></div></div></div>`;
+  return html;
+}
+
+function renderAuthoring() {
+  return renderReviewerTabs('authoring') + `<div class="card" style="max-width:820px;margin:20px auto;padding:36px">
+    <span class="tag soon">Coming soon</span>
+    <h1 style="margin-top:14px">Authoring</h1>
+    <p class="muted">SMEs can generate open-ended scenarios using AI, based on a skill and its objectives, and set the evaluation rubrics.</p>
+    <div style="opacity:.5;margin-top:18px">
+      <div class="label">Skill area</div><input type="text" disabled>
+      <div class="label" style="margin-top:12px">Objectives</div><input type="text" disabled>
+      <div class="label" style="margin-top:12px">Scenario</div><input type="text" disabled>
+      <div style="margin-top:16px"><button class="btn sec" disabled>Generate scenario</button></div>
+    </div></div>`;
+}
+
+function allLearnerRows() {
+  // Returns rows per learner per scenario for the reports, combining synthetic and the demo learner.
+  const data = { ...SYN };
+  data[S.me] = S.mine;
+  return data;
+}
+
+function skillReportRows() {
+  const data = allLearnerRows();
+  return SKILLS.map(skill => {
+    const learners = Object.keys(data).filter(L => attemptedCount(skill.id, data[L]) > 0);
+    const profs = learners.map(L => skillProficiency(skill.id, data[L]));
+    const counts = learners.map(L => attemptedCount(skill.id, data[L]));
+    const avg = a => a.length ? round1(a.reduce((x, y) => x + y, 0) / a.length) : 0;
+    return { skill: skill.name, learners: learners.length, avgProficiency: avg(profs), avgScenarios: avg(counts) };
+  });
+}
+
+function scenarioReportRows() {
+  const data = allLearnerRows();
+  const rows = [];
+  for (const skill of SKILLS) {
+    for (const sc of skill.scenarios) {
+      const latest = Object.keys(data).filter(L => data[L][sc]).map(L => data[L][sc]);
+      const avg = a => a.length ? round1(a.reduce((x, y) => x + y, 0) / a.length) : 0;
+      rows.push({
+        skill: skill.name, scenario: SCENARIOS[sc].title, attempts: latest.length,
+        avgLatest: avg(latest.map(x => x.latest)),
+        obj: skill.objectives.map(o => avg(Object.keys(data).filter(L => data[L][sc]).map(L => {
+          // objective averages come from synthetic per-objective scores; for the demo learner, use the stored results
+          const rec = data[L][sc];
+          if (rec.results) { const r = rec.results.find(x => x.id === o.id); return r ? r.level : 0; }
+          return rec.objs[skill.objectives.indexOf(o)];
+        })))
+      });
+    }
+  }
+  return rows;
+}
+
+function learnerReportRows(learner) {
+  const data = allLearnerRows();
+  const rows = [];
+  for (const skill of SKILLS) {
+    for (const sc of skill.scenarios) {
+      const rec = data[learner] && data[learner][sc];
+      if (!rec) continue;
+      rows.push({ skill: skill.name, scenario: SCENARIOS[sc].title, first: rec.first, latest: rec.latest,
+        change: round1(rec.latest - rec.first), comment: rec.comment || '' });
+    }
+  }
+  SYN_FOLLOW.filter(f => f.learner === learner).forEach(f => {
+    const sk = SKILLS.find(s => s.id === f.skill);
+    const o = sk.objectives.find(x => x.id === f.obj);
+    rows.push({ skill: sk.name, scenario: 'Follow-up: ' + o.name, first: f.first, latest: f.follow,
+      change: f.follow - f.first, comment: '' });
+  });
+  if (learner === S.me) {
+    S.followups.forEach(f => {
+      const sk = SKILLS.find(s => s.id === f.skill);
+      const o = sk.objectives.find(x => x.id === f.obj);
+      rows.push({ skill: sk.name, scenario: 'Follow-up: ' + o.name, first: f.first, latest: f.follow,
+        change: f.follow - f.first, comment: '' });
+    });
+  }
+  return rows;
+}
+
+function toCSV(rows) {
+  if (!rows.length) return '';
+  const keys = Object.keys(rows[0]);
+  const q = v => '"' + String(v).replace(/"/g, '""') + '"';
+  return [keys.join(','), ...rows.map(r => keys.map(k => q(r[k])).join(','))].join('\n');
+}
+
+function download(name, text, type) {
+  const blob = new Blob([text], { type });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+function exportReport(kind, format) {
+  let rows, name;
+  if (kind === 'scenario') { rows = scenarioReportRows(); name = 'scenario-report'; }
+  else if (kind === 'skill') { rows = skillReportRows(); name = 'skill-report'; }
+  else { rows = learnerReportRows(S.rLearner || 'L-1001'); name = 'learner-report-' + (S.rLearner || 'L-1001'); }
+  const flat = rows.map(r => {
+    const o = { ...r };
+    if (o.obj) { o.objective1 = o.obj[0]; o.objective2 = o.obj[1]; o.objective3 = o.obj[2]; o.objective4 = o.obj[3]; delete o.obj; }
+    return o;
+  });
+  if (format === 'csv') download(name + '.csv', toCSV(flat), 'text/csv');
+  else download(name + '.json', JSON.stringify({ report: kind, note: 'Development guidance, not a performance rating. Synthetic data.', rows: flat }, null, 2), 'application/json');
+}
+
+function renderTableOf(rows, cols) {
+  return '<table><tr>' + cols.map(c => `<th>${esc(c[0])}</th>`).join('') + '</tr>' +
+    rows.map(r => '<tr>' + cols.map(c => `<td>${c[1](r)}</td>`).join('') + '</tr>').join('') + '</table>';
+}
+
+function renderReports() {
+  let html = renderReviewerTabs('reports') + '<h1>Reports</h1>';
+  html += `<div class="tabs" style="margin-bottom:14px">
+    <button class="${S.rtab === 'scenario' ? 'on' : ''}" onclick="S.rtab='scenario';render()">Scenario and skill</button>
+    <button class="${S.rtab === 'learner' ? 'on' : ''}" onclick="S.rtab='learner';render()">Learner</button></div>`;
+  if (S.rtab === 'scenario') {
+    html += '<h2>By skill area</h2>' + renderTableOf(skillReportRows(), [
+      ['Skill area', r => esc(r.skill)], ['Learners attempted', r => r.learners],
+      ['Average skill proficiency', r => r.avgProficiency + ' of 3'], ['Scenarios attempted per learner', r => r.avgScenarios]]);
+    html += '<h2 style="margin-top:22px">By scenario</h2>' + renderTableOf(scenarioReportRows(), [
+      ['Skill area', r => esc(r.skill)], ['Scenario', r => esc(r.scenario)], ['Attempts', r => r.attempts],
+      ['Average latest score', r => r.avgLatest], ['Obj 1', r => r.obj[0]], ['Obj 2', r => r.obj[1]],
+      ['Obj 3', r => r.obj[2]], ['Obj 4', r => r.obj[3]]]);
+    html += '<div class="toolbar" style="margin-top:14px"><button class="btn sec" onclick="exportReport(\'scenario\',\'csv\')">Export CSV</button><button class="btn" onclick="exportReport(\'scenario\',\'json\')">Export JSON</button></div>';
+  } else {
+    const learners = [S.me, ...SYN_LEARNERS];
+    const sel = S.rLearner || S.me;
+    html += `<div class="row" style="margin-bottom:12px"><label>Learner <select style="width:auto" onchange="S.rLearner=this.value;render()">${learners.map(L => `<option value="${L}" ${L === sel ? 'selected' : ''}>${L}${L === S.me ? ' (you)' : ''}</option>`).join('')}</select></label></div>`;
+    const rows = learnerReportRows(sel);
+    html += rows.length ? renderTableOf(rows, [
+      ['Skill area', r => esc(r.skill)], ['Scenario or follow-up', r => esc(r.scenario)],
+      ['First score', r => r.first], ['Latest score', r => r.latest], ['Change', r => (r.change > 0 ? '+' : '') + r.change],
+      ['Reviewer comment', r => esc(r.comment || '—')]]) : '<p class="muted">No attempts recorded for this learner.</p>';
+    html += `<div class="toolbar" style="margin-top:14px"><button class="btn sec" onclick="S.rLearner='${sel}';exportReport('learner','csv')">Export CSV</button><button class="btn" onclick="S.rLearner='${sel}';exportReport('learner','json')">Export JSON</button></div>`;
+  }
+  html += '<p class="muted small">Synthetic data, except your own attempts in this session.</p>';
+  return html;
+}
+
+/* ---------------- Render ---------------- */
+
+function render() {
+  document.getElementById('nav-learner').className = S.mode === 'learner' ? 'on' : '';
+  document.getElementById('nav-reviewer').className = S.mode === 'reviewer' ? 'on' : '';
+  let html;
+  if (S.mode === 'reviewer') {
+    switch (S.view) {
+      case 'review': html = renderReview(); break;
+      case 'authoring': html = renderAuthoring(); break;
+      case 'reports': html = renderReports(); break;
+      default: html = renderQueue();
+    }
+  } else {
+    switch (S.view) {
+      case 'scenario': html = renderScenario(); break;
+      case 'results': html = renderResults(); break;
+      case 'pending': html = renderPending(); break;
+      case 'followup': html = renderFollowup(); break;
+      case 'followresult': html = renderFollowResult(); break;
+      default: html = renderBrowse();
+    }
+  }
+  document.getElementById('app').innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>

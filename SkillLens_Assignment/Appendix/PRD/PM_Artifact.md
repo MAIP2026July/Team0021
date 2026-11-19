@@ -2,31 +2,36 @@
 
 | Field | Value |
 |---|---|
-| Product | SkillLens: Adaptive Competency Diagnostic and Precision Remediation Engine |
-| Document | Product Requirements Document, version 1.0 |
-| Scope | Any skill that has defined learning objectives. Python for data analysis is the reference skill. |
+| Product | SkillLens: open-ended skills assessment, delivered as an integration point for learning platforms |
+| Document | Product Requirements Document |
+| Scope | Three live skill areas with three scenarios each; three further skill areas marked coming soon |
 | Status | Artifact review |
 
 ---
 
 ## 1. Problem Statement
 
-Employees who complete a skill benchmark receive a proficiency score, but the score does not identify which applied abilities are missing. Learners who score low are typically assigned broad courses of 30 to 40 hours. These courses have low completion rates and often do not address the specific gap. Managers have no calibrated, evidence-based view of applied ability, and multiple-choice assessments measure recall rather than the ability to reason through a realistic situation.
+Learning platforms and enterprises assess skills with multiple-choice and matching items. These formats measure recall. They do not show whether a person can apply a skill to a realistic situation, and they do not say which applied ability is missing. Learners who score low are usually assigned broad content of 30 to 40 hours, which has low completion and often does not address the gap. Managers and L&D teams therefore have no calibrated, evidence-based record of applied ability that they can use or share.
 
-**Decision being improved:** which specific applied abilities a learner lacks, and what the learner should practise next to close each gap.
+**Decision being improved:** which applied abilities a learner lacks in each skill area, and what the learner should practise next.
 
 ---
 
 ## 2. Product Vision
 
-Turn a skill into an evidence-backed diagnosis of what a learner cannot yet apply, and the shortest practice path to close each gap.
+SkillLens is an assessment layer that any learning platform or enterprise can plug into. It scores open-ended responses to realistic scenarios, shows the evidence behind each score, routes uncertain results to a human reviewer, and exports results to the systems that need them.
 
-## 3. Jobs to Be Done
+---
 
-| Persona | Job to be done |
-|---|---|
-| Learner | When I want to build a practical skill, I want to see which applied abilities I am missing and practise those specifically, so that I can close each gap without repeating a full course. |
-| Manager (reviewer) | When a learner's result cannot be scored with confidence, I want to see the learner's answer alongside the evidence, so that I can confirm or correct the result with a recorded reason. |
+## 3. Users and Jobs to Be Done
+
+| Role | Who | Job to be done |
+|---|---|---|
+| Learner | Employee or learner on a partner platform | When I want to build a practical skill, I want to see which applied abilities I am missing and practise those, so that I can close each gap without repeating a full course. |
+| Reviewer | Manager or L&D reviewer | When a result cannot be scored with confidence, I want to see the answer and the evidence, so that I can confirm or correct the result with a recorded reason. |
+| Integration owner | Platform partner or enterprise L&D administrator | When my learners complete assessments, I want their results in my own systems, so that my reports and decisions use applied-skill evidence. |
+
+Buyers are platform partners (for example, learning platforms that want an open-ended assessment capability) and enterprise L&D teams that use SkillLens directly.
 
 ---
 
@@ -34,94 +39,100 @@ Turn a skill into an evidence-backed diagnosis of what a learner cannot yet appl
 
 ### 4.1 Public context
 
-- Skillsoft launched Skill Benchmark Assessments in Percipio in 2022. Learners answer curated question sets aligned to specific skills and receive a Benchmark score. Administrators and managers can view scores by individual and by team. [BusinessWire, March 2022](https://www.businesswire.com/news/home/20220328005585/en/Skillsoft-Launches-New-Assessment-Capability-in-Percipio-to-Accelerate-Critical-Skill-Mastery-and-Close-Enterprise-Skill-Gaps)
-- Skillsoft's next-generation Percipio platform became generally available in February 2026, combining skills mapping, assessment, development and measurement in one platform. [BusinessWire, February 2026](https://www.businesswire.com/news/home/20260204242978/en/Skillsoft-Leads-the-Shift-to-Skills-Management-for-Workforce-Readiness)
-- Skillsoft reports 994% year-over-year growth in AI-related Skill Benchmark completions between December 2024 and December 2025. This is a company-reported figure. [Barchart](https://www.barchart.com/story/news/1342730/ai-skills-validation-surges-994-as-employees-seek-to-prove-proficiency)
+- Skillsoft launched Skill Benchmark Assessments in Percipio in 2022. Learners answer curated question sets aligned to specific skills and receive a Benchmark score. [BusinessWire, March 2022](https://www.businesswire.com/news/home/20220328005585/en/Skillsoft-Launches-New-Assessment-Capability-in-Percipio-to-Accelerate-Critical-Skill-Mastery-and-Close-Enterprise-Skill-Gaps)
+- Skillsoft's next-generation Percipio platform became generally available in February 2026, combining skills mapping, assessment, development and measurement. [BusinessWire, February 2026](https://www.businesswire.com/news/home/20260204242978/en/Skillsoft-Leads-the-Shift-to-Skills-Management-for-Workforce-Readiness)
+- Skillsoft reports 994% year-over-year growth in AI-related Skill Benchmark completions. This is a company-reported figure. [Barchart](https://www.barchart.com/story/news/1342730/ai-skills-validation-surges-994-as-employees-seek-to-prove-proficiency)
+- Public material does not describe how benchmark scores are calculated. SkillLens does not depend on that method.
+
+These sources show that platforms are investing in skills assessment and AI skill validation. They do not establish demand for an open-ended assessment service, which is a hypothesis to test with partners.
 
 ### 4.2 Why current alternatives are insufficient
 
 | Alternative | Limitation |
 |---|---|
-| Benchmark score only | Indicates the level, not the gap |
-| Generic courses | Low completion; may not address the specific gap |
-| Manager check-ins | Uncalibrated and inconsistent across managers |
-| Multiple-choice assessment | Measures recall; can be gamed |
+| Score-only assessment | Shows the level, not the gap |
+| Generic content | Low completion; may not address the specific gap |
+| Manager check-ins | Uncalibrated and inconsistent |
+| Multiple-choice and matching items | Measure recall; can be gamed |
 
 ### 4.3 Why AI, and why not automatically
 
-Open-ended responses to realistic scenarios show applied reasoning. A language model can read such a response, score it against a written rubric for each objective, and quote the text that supports each score. Published studies report a wide range of agreement between language-model and human graders, depending on model, rubric and prompt. Reliability is therefore measured for each rubric before results are shown to learners. The product is designed around confidence routing and evidence verification, not around a single automated score.
+Open-ended responses show applied reasoning, such as a trade-off explained or a result checked. A language model can read a response, score it against a written rubric for each objective, and quote the text behind each score. Published studies report a wide range of agreement between language-model and human graders, depending on model, rubric and prompt. Reliability is therefore measured for each rubric before results reach learners, and confidence is routed to a reviewer.
 
-### 4.4 Build, buy or API
+### 4.4 Positioning and build, buy or partner
 
 | Capability | Decision | Rationale |
 |---|---|---|
-| Scenario and rubric authoring for open-ended assessments | Build | Core differentiator; the assessment method is the contribution of SkillLens |
-| Skill courses and benchmark catalogue | Partner (Skillsoft) | Skillsoft already maintains a large catalogue of skills and benchmarks; SkillLens does not rebuild it |
-| Delivery, learner platform and reporting | Partner (Skillsoft) | Assumed to be provided by the platform; integration is not yet verified (section 4.6) |
-| Rubric scoring | API (hosted language model) | Commodity capability; accessed through a provider |
-| Evidence verification and confidence routing | Build | Differentiating; deterministic and auditable |
-| Feedback and follow-up practice | Build | Core to remediation; uses rubric descriptors, not external content |
+| Scenario, objective and rubric content | Build | Core differentiator |
+| Scoring with evidence and confidence | Build, using a hosted language model through an API | The model is a commodity input; the evidence and confidence design is the product |
+| Review workflow and reports | Build | Required for trust and for partner reporting |
+| Skill courses, learner accounts and delivery | Partner or existing platform | Learning platforms already provide these |
+| Export to partner systems | Build (JSON API and CSV) | Makes SkillLens usable as an integration point |
 
-**Main trade-offs.** API dependence brings provider pricing and availability risk, and learner responses leave the organization. Mitigations are pseudonymous identifiers, no personal names in prompts, and review of provider data terms before any pilot with real learners.
+**Trade-offs.** Dependence on a model provider brings price and availability risk. Learner responses leave the organisation when the model is called. Mitigations are pseudonymous identifiers, no personal names in prompts, and review of provider data terms before any pilot with real learners.
 
-### 4.5 First wedge
+### 4.5 First release
 
-Python for data analysis, with six curated scenarios, one learner, and one reviewer step. The product is designed so that a new skill is added as content. A second skill with two scenarios is included in the MVP to test that design.
-
----
-
-### 4.6 Positioning with Skillsoft
-
-Skillsoft already maintains a catalogue of skills, courses and benchmark assessments, and its platform combines skills mapping, assessment and measurement (references 1 and 2). Trade coverage of the 2022 launch describes hundreds of Benchmark Assessments across technology and leadership subjects (reference 6). SkillLens therefore does not need to build a content library. Its proposed role is to add open-ended, rubric-based assessment and remediation to skills that the catalogue currently tests with multiple-choice and matching items.
-
-| Layer | Skillsoft (assumed or public) | SkillLens (proposed) |
-|---|---|---|
-| Skill catalogue, courses and benchmarks | Provides | Uses |
-| Learner platform, delivery and reporting | Provides | Embeds or links |
-| Open-ended scenarios for each skill | Benchmark items are multiple-choice and matching | Authors and maintains |
-| Rubric level descriptors for each objective | Objectives exist; rubric descriptors not described publicly | Writes and maintains |
-| AI evaluation with quotations and confidence | Not described publicly | Provides |
-| Feedback and follow-up practice | Not described publicly | Provides |
-| Reviewer confirmation and override | Not described publicly | Provides |
-
-**Work to bring one skill into the platform**
-
-1. Map the skill's benchmark objectives to rubric objectives, using the same identifiers.
-2. Author five to eight open-ended scenarios, each tagged to the objectives it tests.
-3. Write level descriptors (0 to 3) for each objective, and build a reference set of 40 responses graded by two people.
-4. Pass the reliability thresholds in the Evaluation Metrics appendix before the skill is released.
-5. Connect the scoring service to the platform. This requires an integration agreement and platform access.
-
-**Limitations.** Skillsoft's scoring method is not public, so SkillLens cannot yet state how its results would relate to benchmark scores. Integration feasibility, data-sharing terms and commercial terms are not known and must be confirmed with Skillsoft. The prototype is standalone and does not connect to Skillsoft.
+Three live skill areas, each with three scenarios: Data Structures and Algorithms, Communication, and Generative AI. Three further skill areas (Docker, Product management, Leadership) are shown as coming soon.
 
 ---
 
-## 5. Core Workflow
+## 5. Product Structure
 
-1. The learner selects a skill from the content library and reviews its objectives.
-2. The system presents a curated scenario for the selected skill.
-3. The learner submits a free-text response.
-4. The system scores each objective from 0 to 3 against the rubric. Each score includes a verbatim quotation from the response.
-5. The system verifies each quotation against the response and determines a confidence level for each objective.
-6. The learner sees, for each objective, the score, the supporting evidence, and rubric-based feedback on what the next level requires.
-7. For each objective scored below 3, the learner can take a follow-up scenario that tests only that objective.
-8. The system compares the objective's score across attempts and shows whether it improved.
-9. Results with low confidence are held for reviewer confirmation. The learner then sees the reviewed result.
+### 5.1 Skill catalogue
 
----
-
-## 6. Skill Content Model
-
-Each skill is defined by four content elements. The product logic is the same for every skill.
-
-| Element | Definition | Owner | Python for data analysis (example) |
+| Skill area | Status | Scenarios | Objectives |
 |---|---|---|---|
-| Objectives | 3 to 5 applied abilities that make up the skill | Subject-matter expert | O1 Load and validate data; O2 Handle missing and inconsistent values; O3 Aggregate correctly; O4 Interpret and qualify results |
-| Scenarios | 5 to 8 realistic situations that require the objectives; each scenario is tagged to the objectives it tests | Subject-matter expert | A weekly subscription export with mixed date formats, missing plan types, and duplicate records |
-| Rubric | Level descriptors (0 to 3) for each objective in each scenario | Subject-matter expert | Defined in the Evaluation Metrics appendix |
-| Reference set | Responses scored by two graders, used to test reliability | Product and evaluation team | 40 responses per skill |
+| Data Structures and Algorithms | Live | DSA-1 The High-Traffic Flash Sale; DSA-2 Degrees of Separation; DSA-3 The Rate Limiter for API Protection | O1 Choose the data structure; O2 Analyse time complexity; O3 Analyse space complexity; O4 Explain trade-offs and limits |
+| Communication | Live | COM-1 Project delay message; COM-2 Explaining a report format; COM-3 Handling a challenge from a senior stakeholder | C1 Structure the message; C2 Adapt to the audience; C3 Handle questions and challenge; C4 Write concisely |
+| Generative AI | Live | GAI-1 Choosing an approach for a support assistant; GAI-2 Judging a summary tool's output; GAI-3 Handling sensitive data in prompts | G1 Frame the problem; G2 Choose an approach and justify it; G3 Evaluate output quality; G4 Manage risk and data |
+| Docker | Coming soon | None yet | None yet |
+| Product management | Coming soon | None yet | None yet |
+| Leadership | Coming soon | None yet | None yet |
 
-A new skill is released only after it passes the reliability thresholds on its own reference set. Authoring effort per skill is tracked as a scaling metric.
+The scenarios, objective descriptors and scoring cues for each live skill area are held as skill-pack data, and are reviewed before release. Scenario texts and rubrics are listed in the Evaluation Metrics appendix.
+
+### 5.2 Scores
+
+- **Objective score:** 0 to 3, with a verbatim quotation for each score above 0.
+- **Scenario score:** the average of the four objective scores for that scenario, from 0 to 3.
+- **Scenario score (latest):** the score from the learner's most recent attempt at that scenario.
+- **Skill proficiency:** the average of the latest scenario scores for the scenarios in that skill area that the learner has attempted. Scenarios not yet attempted are not counted; a skill shows "2 of 3 scenarios attempted" until all three are attempted.
+- **Improvement:** the difference between the first and latest score for the same scenario or skill.
+
+### 5.3 Authoring
+
+Authoring (creating scenarios and rubrics, including AI-assisted drafting for subject-matter experts) is shown in the reviewer area as coming soon. In this release, skill-pack content is written and reviewed outside the product.
+
+---
+
+## 6. Core Workflows
+
+### 6.1 Learner
+
+1. The learner opens the skill browser. Skill areas are shown as expandable accordions in one common layout; coming-soon skill areas are marked with a yellow "Coming soon" tag and cannot be expanded.
+2. The learner expands a skill area and sees a card for each scenario, with its focus, estimated time, latest score and a Start or Retake action.
+3. The learner opens a scenario, reads it and the objectives it assesses, and writes a response of at least 40 words.
+4. The system checks the response is long enough and on topic, then scores each objective with a quotation.
+5. The system verifies each quotation and sets a confidence level for each objective.
+6. The learner sees the scenario score, the objective scores with evidence, feedback on the next level, and the skill proficiency with the number of scenarios attempted.
+7. For any objective below 3, the learner can practise that objective with a follow-up scenario and sees the score change.
+8. Results held for review are shown as pending. When a reviewer decides, the learner sees the reviewed result and any reviewer comment.
+
+### 6.2 Reviewer
+
+1. The reviewer opens the review queue, which lists learner requests and results held for low confidence.
+2. The reviewer opens an item and sees the learner's response beside the AI scores, quotations, verification status and run agreement.
+3. The reviewer confirms or overrides each objective score. An override requires a reason.
+4. The reviewer may add a comment for the learner. Comments are shown on the learner's result.
+
+### 6.3 Integration owner and reports
+
+1. Reports are available in three views:
+   - **Scenario report:** attempts per scenario, average latest score, and average score per objective.
+   - **Skill report:** learners attempted each skill area, average skill proficiency based on each learner's latest scenario scores, and average number of scenarios attempted per learner.
+   - **Learner report:** for each skill and scenario, the first score, the latest score, the change, and the reviewer comment where one exists.
+2. Each report can be downloaded as CSV, and the same data is available as JSON through an API. Both use the same fields.
 
 ---
 
@@ -129,112 +140,93 @@ A new skill is released only after it passes the reliability thresholds on its o
 
 | ID | Requirement | Acceptance criterion |
 |---|---|---|
-| FR-01 | The learner selects a skill from the content library. | Every published skill is listed with its objectives, and each skill loads without error. |
-| FR-02 | The system presents one scenario per skill, with the objectives it assesses. | Every scenario lists the objectives defined in its rubric. |
-| FR-03 | The system stores the learner's response exactly as submitted. | The stored text matches the submitted text in 100% of cases. |
-| FR-04 | The system scores each objective from 0 to 3 with a verbatim quotation. | Every score is validated against the output schema. A score without a quotation is recorded as 0. |
-| FR-05 | The system verifies each quotation against the response text. | 100% of quotations are verified before display. Failures are routed under FR-08. |
-| FR-06 | The system determines confidence per objective from three scoring runs. | Confidence follows the rules in section 8 in 100% of cases. |
-| FR-07 | The system displays per-objective scores, evidence and confidence. | Every displayed score includes its verified quotation and confidence level. |
-| FR-08 | Results with low confidence are held for review. | No score from a low-confidence result is displayed to the learner before a reviewer decision. |
-| FR-09 | The reviewer confirms or overrides each objective score. | An override cannot be saved without a reason. Every decision is recorded with reviewer role and timestamp. |
-| FR-10 | The system provides feedback for each objective scored below 3. | Each feedback statement is derived from the rubric descriptor for the next level. No feedback is generated without a descriptor. |
-| FR-11 | The system does not score responses under 40 words or responses that are off-topic. | The learner is prompted to expand the response. No scoring request is made. |
-| FR-12 | The system records the audit trail for every scored attempt. | Each record stores the skill version, scenario version, rubric version, model identifier, prompt version, and the three run outputs. |
-| FR-13 | Every result is labelled as development guidance. | The label appears on every results screen and in every export. |
-| FR-14 | The learner can start a follow-up scenario that tests only a selected objective. | The follow-up scenario is drawn from the skill's scenario set and is tagged to that objective. |
-| FR-15 | The system shows the change in an objective's score between attempts. | The change is shown only when both attempts are high or medium confidence. |
+| FR-01 | The learner sees all skill areas in one common accordion layout, with no featured skill area. | Every live skill area expands to show its scenario cards. |
+| FR-02 | Coming-soon skill areas are shown with a yellow "Coming soon" tag and no accordion. | Coming-soon areas cannot be expanded or started. |
+| FR-03 | Each scenario card shows its title, focus, estimated time and the learner's latest score or "Not attempted". | Each card displays all four fields. |
+| FR-04 | The system stores the learner's response exactly as submitted. | Stored text matches submitted text in 100% of cases. |
+| FR-05 | The system scores each objective from 0 to 3 with a verbatim quotation for each score above 0. | Output validates against the schema. A score without a quotation is recorded as 0. |
+| FR-06 | The system verifies each quotation against the response text. | 100% of displayed quotations are verified; failures are routed to review. |
+| FR-07 | The system sets confidence per objective from three scoring runs. | Confidence follows section 8 in every case. |
+| FR-08 | Results with low confidence are held for review and show no score to the learner. | No held score is displayed before a reviewer decision. |
+| FR-09 | The reviewer confirms or overrides each objective score. An override requires a reason. | Overrides without a reason cannot be saved. |
+| FR-10 | The reviewer can add a comment that is shown to the learner. | Comments appear on the learner's result after review. |
+| FR-11 | The system gives feedback for each objective scored below 3, derived from the rubric descriptor for the next level. | Every feedback item references a rubric descriptor. |
+| FR-12 | The system computes scenario scores and skill proficiency as defined in section 5.2. | Calculated values match the definitions in 100% of test cases. |
+| FR-13 | The learner can practise any objective below 3 with a follow-up scenario on that objective and sees the score change. | Change is shown only when both attempts are high or medium confidence. |
+| FR-14 | The system provides the scenario, skill and learner reports defined in section 6.3. | Each report displays its defined fields. |
+| FR-15 | Each report can be exported as CSV and JSON with the same fields. | The CSV and JSON exports contain identical field values. |
+| FR-16 | The system records an audit trail for every scored attempt. | Each record stores skill, scenario and rubric versions, model identifier, prompt version, the three run outputs, quotation checks, and reviewer decisions. |
+| FR-17 | Every result and export carries the label "Development guidance, not a performance rating." | The label appears on every results screen and export. |
+| FR-18 | The system does not score responses under 40 words or responses that are off-topic. | The learner is asked to expand or revise, and no scoring request is made. |
+| FR-19 | Authoring is visible in the reviewer area as coming soon, with its purpose described. | The authoring area has no working controls in this release. |
 
 ---
 
 ## 8. Confidence and Fallback Logic
 
-Each attempt is scored three times with a fixed prompt and temperature 0. Confidence is determined by the system from the results of those runs and the verification checks. The model does not report its own confidence.
+Each attempt is scored three times with a fixed prompt at temperature 0. The system determines confidence from the three runs and the quotation check. The model does not report its own confidence.
 
 | Level | Condition | Learner view | Route |
 |---|---|---|---|
 | High | The three runs agree on every objective, and all quotations are verified | Scores, evidence and feedback | None |
-| Medium | All quotations are verified, and at least one objective differs by exactly one level across runs | Results with a note that some results were borderline and a follow-up scenario is recommended | Optional follow-up |
-| Low | Any quotation is unverified, any objective differs by two or more levels across runs, or the response is off-topic | No score is displayed; the learner is told that a reviewer will confirm the result | Reviewer queue |
+| Medium | All quotations verified; at least one objective differs by one level across runs | Results with a note that some were borderline; optional follow-up | Optional follow-up |
+| Low | Any quotation unverified; any objective differs by two or more levels; response off-topic | No score shown; the result is held | Reviewer queue |
 
 **Standing rules**
 - No result is presented as a performance rating.
-- Results are visible only to the learner and, where configured, the learner's manager.
-- A skill is not released to learners until it meets the reliability thresholds in the Evaluation Metrics appendix.
-- Benchmark scores, where provided, are shown as context and do not affect scoring.
+- Results are visible to the learner and, where the integration owner has configured it, to the learner's manager.
+- A skill area is not released to learners until its scenarios meet the reliability thresholds in the Evaluation Metrics appendix.
 
 ---
 
-## 9. Feature Prioritization
+## 9. Feature Prioritisation
 
-Effort and confidence describe the team's estimate of build effort and delivery certainty for the MVP.
-
-| Feature | User value | Effort | Delivery confidence | Priority | Rationale |
-|---|---|---|---|---|---|
-| Rubric-based scoring per objective | High | Medium | Medium | MVP | Core capability under test |
-| Evidence quotation and verification | High | Low | High | MVP | Deterministic; supports trust |
-| Confidence routing | High | Medium | Medium | MVP | Governs when results are shown |
-| Per-objective diagnosis | High | Medium | Medium | MVP | Core learner value |
-| Rubric-based feedback per objective | High | Low | Medium | MVP | Turns the diagnosis into direction |
-| Follow-up scenario per objective | High | Medium | Medium | MVP | Closes the remediation loop |
-| Score change between attempts | High | Low | High | MVP | Measures improvement |
-| Reviewer confirm and override | Medium | Medium | High | MVP (minimal) | Required to test routing end to end |
-| Second skill added as content | High | Low | Medium | MVP | Tests the skill-agnostic design |
-| Full reviewer workflow and audit view | Medium | Medium | High | Pilot | Needed for controlled pilot |
-| Skillsoft Percipio integration | High | High | Low | Post-MVP (Phase 2) | Depends on partnership and platform access |
-| Micro-course remediation | High | High | Low | Post-MVP | See section 12 |
-| Dynamic scenario generation | Medium | High | Low | Post-MVP | Curated scenarios limit variance |
-| Manager analytics | Medium | High | Medium | Post-MVP | Not required to validate diagnosis |
-| Hiring and candidate screening | Medium | High | Low | Post-MVP | Requires fairness and legal review |
+| Feature | Value | Effort | Priority | Rationale |
+|---|---|---|---|---|
+| Skill browser with accordions and scenario cards | High | Low | MVP | Core learner navigation |
+| Scoring with quotations, verification and confidence | High | Medium | MVP | Core capability under test |
+| Feedback and follow-up practice | High | Medium | MVP | Turns diagnosis into practice |
+| Reviewer queue, confirm and override | High | Medium | MVP | Required for low-confidence results |
+| Reviewer comments shown to learners | Medium | Low | MVP | Adds reviewer value |
+| Scenario, skill and learner reports | High | Medium | MVP | Required by integration owners |
+| CSV and JSON export | High | Low | MVP | Makes SkillLens an integration point |
+| Authoring (coming soon, AI-assisted drafting) | High | High | Post-MVP | Needs reviewed drafting workflow |
+| Docker, Product management, Leadership skill areas | Medium | Medium each | Post-MVP | Content authoring and review |
+| Learning-platform integration (partner connector) | High | High | Post-MVP | Depends on a partner agreement |
+| Manager analytics beyond reports | Medium | Medium | Post-MVP | Not needed to validate the assessment |
+| Hiring and candidate screening | Medium | High | Excluded | Requires fairness and legal review |
 
 ---
 
 ## 10. MVP Definition
 
-**Form.** A web application with a skill selector, curated scenarios, a live scoring service, feedback and follow-up scenarios, and a reviewer screen.
+**Form.** A web application with a skill browser, scenario responses, results and follow-up, a reviewer queue, reports, and CSV and JSON export. The prototype is a single browser page with synthetic data.
 
 **In scope**
-- Two skills: Python for data analysis (six scenarios) and a second skill (two scenarios).
-- Free-text response entry.
-- Per-objective scores from 0 to 3, verified quotations, confidence levels, and rubric-based feedback.
-- Follow-up scenario for any objective scored below 3, with the score change shown between attempts.
-- Low-confidence path to a reviewer screen, with confirm or override and a required reason.
+- Three live skill areas, each with three scenarios and four objectives.
+- Scoring, quotation verification, confidence routing and reviewer decisions.
+- Reviewer comments shown to learners.
+- Scenario, skill and learner reports with CSV and JSON export.
+- Coming-soon presentation for three skill areas and for authoring.
 
 **Out of scope**
-- Micro-courses and course assignment.
-- Benchmark item grading.
-- Integration with Skillsoft Percipio. The prototype is standalone (section 4.6).
+- Authoring tools, beyond the coming-soon placeholder.
+- The three coming-soon skill areas.
+- A production partner connector and identity integration.
 - Hiring and candidate screening.
-- Business-track content.
-- Manager analytics.
-- Dynamic scenario generation.
 - Real learner data.
 
 **The MVP establishes**
-- The scoring workflow produces verifiable, evidence-based results.
-- Confidence routing prevents unreliable results from reaching learners.
-- Feedback and follow-up practice produce a measurable change in objective scores.
-- The reviewer override path operates end to end.
-- A new skill can be added as content without code changes.
+- Open-ended responses produce evidence-backed scores with a known confidence level.
+- Low-confidence results never reach learners before review.
+- Practice on an objective produces a measurable score change.
+- Reports and exports carry the same fields, so a partner can use them directly.
 
 **The MVP does not establish**
 - Accuracy at scale or across learner populations.
-- Whether score improvements on follow-up scenarios transfer to work.
-- Integration effort with Skillsoft Percipio or any other learning platform.
-- Whether the scenario approach works for the skills in the Skillsoft catalogue.
+- Whether practice changes performance at work.
+- Integration effort with any specific partner platform.
 - Economic viability.
-- Whether learners close skill gaps faster than with current remediation.
-
----
-
-### Prototype limitations (as submitted)
-
-- Scoring is scripted, using keyword cues for each level, not a live language model. The prototype does not measure model accuracy.
-- Quotations are taken from the learner's response. Confidence is derived from cue strength in a single pass. The three-run agreement rule in section 8 is not implemented in the prototype.
-- The automatic low-confidence route is not triggered by the prototype. The reviewer queue fills only when a learner requests a review.
-- The prototype includes two scenarios per skill, against six for Python in the MVP.
-- Content is synthetic. The prototype is not a validated assessment.
-- The prototype is standalone and does not connect to Skillsoft or to any learner data.
 
 ---
 
@@ -242,24 +234,26 @@ Effort and confidence describe the team's estimate of build effort and delivery 
 
 | Risk | Control |
 |---|---|
-| Misquoted or unsupported evidence | Deterministic quotation check; any failure routes the result to review and blocks release |
-| Scoring bias against writing style or language | Paired-style test set; score shifts and agreement gaps reported by group |
-| Gaming of the rubric through keyword use | Keyword-only test set; rubric requires reasoning and stated trade-offs |
-| Improvement that reflects practice on the same scenario, not skill | Follow-up scenarios use different situations for the same objective |
-| Scores used for performance decisions | Development-guidance label; access limited to the learner and designated manager |
-| Privacy of employee data | Pseudonymous identifiers; no personal names in prompts; provider data terms reviewed before pilot |
-| Over-reliance on automated results | Confidence routing; reviewer override with recorded reason |
-| Rubric quality differs across skills | Reliability threshold applied to each skill before release |
-| Skillsoft partnership or platform access is not granted | Integration cannot proceed | The scoring service is built to run standalone, so the product does not depend on integration |
-| Skillsoft's scoring method is not public | Results cannot be reconciled with benchmark scores | Validate results against expert graders, not against benchmark scores |
+| Misquoted or unsupported evidence | Quotation check; failures routed to review |
+| Scoring errors | Reliability thresholds per skill area before release |
+| Bias against writing style or language | Paired-style test; group gap reported |
+| Gaming of the rubric through keywords | Keyword-only test; rubric rewards reasoning |
+| Scores used for performance decisions | Development-guidance label on every result and export |
+| Exported data reaching the wrong system | Export access limited to the integration owner; pseudonymous identifiers |
+| Reviewer comments containing personal information | Comment guidance for reviewers; comments checked before release |
+| Coming-soon areas mistaken for available content | Yellow tag, no accordion, no start action |
+| Dependence on a model provider | Provider abstraction; re-evaluation on any model change |
 
-A full risk assessment is provided in the Risk Note.
+The full risk assessment is in the Risk Note.
 
 ---
 
-## 12. Post-MVP Plan: Micro-Courses
+## 12. Post-MVP Plan
 
-After the scenario loop is validated, a later phase can add short micro-courses for objectives that learners repeatedly find difficult. Each would be a slide-based module of about 5 to 6 minutes with narration, followed by a check on the same objective. Authors would mark the hardest objectives when a skill is built, and subject-matter experts would complete a standard template for each one. Each course would be approved, published, and assigned by a manager, and a check after the course would record whether the gap closed. This is deferred because it depends on item-level benchmark data, a course production workflow, and evidence that the scenario loop works first. The design is kept in this plan so that it can be added without changing the scenario-based core.
+- **Authoring:** a subject-matter-expert workspace in which scenarios, objectives and rubrics are drafted with AI assistance and then reviewed and published.
+- **Coming-soon skill areas:** Docker, Product management and Leadership, each published only after it meets the reliability thresholds.
+- **Partner connector:** a live integration with a learning platform, under a partner agreement.
+- **Micro-courses:** a deferred option for objectives learners repeatedly find difficult. Each would be a short slide-based module with a check on the same objective. Considered only after the scenario loop and the partner connector are validated.
 
 ---
 
